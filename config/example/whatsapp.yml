@@ -1,0 +1,5 @@
+whatsapp:
+  saungwa:
+    url: https://app.saungwa.com/api/create-message
+    appkey: x
+    authkey: x

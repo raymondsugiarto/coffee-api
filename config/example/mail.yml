@@ -1,0 +1,5 @@
+mail:
+  brevo:
+    host: 'https://api.brevo.com/v3'
+    apikey: ''
+    sender: 'no-reply@b8space.com'

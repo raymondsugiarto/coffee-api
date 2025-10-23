@@ -1,0 +1,2 @@
+cron:
+  monthlyFee: "false" # Set to "true" to enable monthly fee cron job

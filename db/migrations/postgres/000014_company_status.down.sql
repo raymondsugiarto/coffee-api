@@ -1,0 +1,1 @@
+ALTER TABLE IF EXISTS company DROP COLUMN status;

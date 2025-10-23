@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS unit_link DROP COLUMN updated_at;
+ALTER TABLE IF EXISTS unit_link DROP COLUMN deleted_at;

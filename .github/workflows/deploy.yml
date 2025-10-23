@@ -1,0 +1,54 @@
+name: Deploy
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      GITHUB_REF: ${{ github.ref }}
+      DOCKER_REGISTRY: ghcr.io
+      DOCKER_IMAGE: raymondsugiarto/dplk-api
+      ACTIONS_STEP_DEBUG: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Creating envs
+        run: |
+          echo "IMAGE_TAG=sha-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "DOCKER_IMAGE_URI=${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE }}" >> $GITHUB_ENV
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build docker image and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.DOCKER_IMAGE }}:${{ env.IMAGE_TAG }},${{ env.DOCKER_IMAGE }}:latest
+
+      # - name: Deploy stack to Portainer
+      #   uses: scod-br/portainer-stack-deploy@1.5
+      #   with:
+      #     portainer-host: ${{ secrets.PORTAINER_HOST }}
+      #     username: ${{ secrets.PORTAINER_USERNAME }}
+      #     password: ${{ secrets.PORTAINER_PASSWORD }}
+      #     endpoint-id: '2'
+      #     swarm-id: 'y40qakxkv28kbh00yk73ncgyw'
+      #     stack-name: 'valas-api'
+      #     stack-definition: 'stack-definition.yml'
+      #     template-variables: '{"username": "raymondsugiarto"}'
+      #     image: ${{ env.DOCKER_IMAGE }}:${{ env.IMAGE_TAG }}
+      #     prune-stack: true
+      #     pull-image: true

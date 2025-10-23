@@ -1,0 +1,3 @@
+ALTER TABLE IF EXISTS approval DROP COLUMN detail;
+ALTER TABLE IF EXISTS approval DROP COLUMN reason;
+ALTER TABLE IF EXISTS approval DROP COLUMN created_date;

@@ -1,0 +1,1 @@
+ALTER TABLE redeem DROP COLUMN note;

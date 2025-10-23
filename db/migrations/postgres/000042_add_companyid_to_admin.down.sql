@@ -1,0 +1,1 @@
+ALTER TABLE IF EXISTS "admin" DROP COLUMN company_id VARCHAR(255);

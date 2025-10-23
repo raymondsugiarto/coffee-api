@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS portfolio DROP COLUMN participant_id;
+ALTER TABLE IF EXISTS portfolio DROP COLUMN ip;
