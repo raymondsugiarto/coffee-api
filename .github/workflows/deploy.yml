@@ -13,7 +13,7 @@ jobs:
     env:
       GITHUB_REF: ${{ github.ref }}
       DOCKER_REGISTRY: ghcr.io
-      DOCKER_IMAGE: raymondsugiarto/dplk-api
+      DOCKER_IMAGE: raymondsugiarto/coffee-rider-api
       ACTIONS_STEP_DEBUG: true
 
     steps:
