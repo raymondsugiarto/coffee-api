@@ -30,7 +30,7 @@ WORKDIR /app
 
 RUN mkdir /app/config \
 	&& mkdir /app/logs \
-	&& mkdir /app/config/resources \
+	&& mkdir /app/config/resources 
 
 COPY --from=builder /app/main /app/
 COPY --from=builder /app/config /app/config
