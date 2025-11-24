@@ -71,10 +71,8 @@ type UserDto struct {
 
 func (u *UserDto) ToModel() *model.User {
 	m := &model.User{
-		OrganizationID:          u.OrganizationID,
-		UserType:                model.UserType(string(u.UserType)),
-		PhoneVerificationStatus: u.PhoneVerificationStatus,
-		EmailVerificationStatus: u.EmailVerificationStatus,
+		OrganizationID: u.OrganizationID,
+		UserType:       model.UserType(string(u.UserType)),
 	}
 	if u.ID != "" {
 		m.ID = u.ID
@@ -86,22 +84,15 @@ func (u *UserDto) ToModel() *model.User {
 			m.UserCredential = append(m.UserCredential, uc.ToModel())
 		}
 	}
-	if len(u.UserHasRoleDto) > 0 {
-		m.UserHasRole = make([]*model.UserHasRole, 0)
-		for _, hr := range u.UserHasRoleDto {
-			m.UserHasRole = append(m.UserHasRole, hr.ToModel())
-		}
-	}
+
 	return m
 }
 
 func (u *UserDto) FromModel(m *model.User) *UserDto {
 	return &UserDto{
-		OrganizationID:          u.OrganizationID,
-		ID:                      m.ID,
-		UserType:                UserType(m.UserType),
-		PhoneVerificationStatus: m.PhoneVerificationStatus,
-		EmailVerificationStatus: m.EmailVerificationStatus,
+		OrganizationID: u.OrganizationID,
+		ID:             m.ID,
+		UserType:       UserType(m.UserType),
 	}
 }
 

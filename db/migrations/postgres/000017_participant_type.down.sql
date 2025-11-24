@@ -1,1 +1,0 @@
-ALTER TABLE IF EXISTS participant DROP COLUMN type;

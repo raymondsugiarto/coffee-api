@@ -1,8 +1,0 @@
-ALTER TABLE IF EXISTS claim ADD COLUMN participant_card VARCHAR(255);
-ALTER TABLE IF EXISTS claim ADD COLUMN identity_card_file VARCHAR(255);
-ALTER TABLE IF EXISTS claim ADD COLUMN tax_identity_file VARCHAR(255);
-ALTER TABLE IF EXISTS claim ADD COLUMN family_card_file VARCHAR(255);
-ALTER TABLE IF EXISTS claim ADD COLUMN death_certificate_file VARCHAR(255);
-ALTER TABLE IF EXISTS claim ADD COLUMN guardian_certificate_file VARCHAR(255);
-ALTER TABLE IF EXISTS claim ADD COLUMN medical_certificate_file VARCHAR(255);
-ALTER TABLE IF EXISTS claim ADD COLUMN work_certificate_file VARCHAR(255);

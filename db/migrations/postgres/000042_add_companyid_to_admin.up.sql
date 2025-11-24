@@ -1,1 +1,0 @@
-ALTER TABLE IF EXISTS "admin" ADD COLUMN company_id VARCHAR(255);

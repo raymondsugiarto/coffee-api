@@ -1,2 +1,0 @@
-DROP TABLE IF EXISTS bank;
-DROP TABLE IF EXISTS investment_payment;

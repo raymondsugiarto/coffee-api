@@ -29,6 +29,9 @@ func (s *service) GenerateToken(ctx context.Context, userCredentialData e.UserCr
 	claims := token.Claims.(jwt.MapClaims)
 	claims["id"] = userCredentialData.ID
 	claims["uid"] = userCredentialData.UserID
+	if userCredentialData.AdminID != "" {
+		claims["aid"] = userCredentialData.AdminID
+	}
 	if userCredentialData.CompanyID != "" {
 		claims["coid"] = userCredentialData.CompanyID
 	}

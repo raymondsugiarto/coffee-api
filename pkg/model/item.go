@@ -2,10 +2,12 @@ package model
 
 import "github.com/raymondsugiarto/coffee-api/pkg/model/concern"
 
-type Company struct {
+type Item struct {
 	concern.CommonWithIDs
 	OrganizationID string
-	Organization   Organization
-	PhoneNumber    string
+	Organization   *Organization
+	Code           string
 	Name           string
+	Price          float64
+	ItemCompany    []ItemCompany
 }

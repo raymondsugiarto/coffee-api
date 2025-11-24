@@ -6,21 +6,7 @@ type LoginRequestDto struct {
 }
 
 type LoginDto struct {
-	Token                       string                       `json:"token"`
-	Expired                     string                       `json:"expiredAt"`
-	Status                      string                       `json:"status"`
-	UserIdentityVerificationDto *UserIdentityVerificationDto `json:"userIdentityVerification,omitempty"`
-}
-
-type UserIdentityVerificationInputEmailDto struct {
-	ID         string `json:"id"`
-	UniqueCode string `json:"uniqueCode"`
-}
-
-func (u *UserIdentityVerificationInputEmailDto) ToDto() *UserIdentityVerificationDto {
-	return &UserIdentityVerificationDto{
-		ID:         u.ID,
-		UniqueCode: u.UniqueCode,
-		Data:       u,
-	}
+	Token   string `json:"token"`
+	Expired string `json:"expiredAt"`
+	Status  string `json:"status"`
 }

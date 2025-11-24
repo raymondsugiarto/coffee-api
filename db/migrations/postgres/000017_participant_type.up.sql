@@ -1,1 +1,0 @@
-ALTER TABLE IF EXISTS participant ADD COLUMN type varchar(255) NULL;

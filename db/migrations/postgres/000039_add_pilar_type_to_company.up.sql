@@ -1,1 +1,0 @@
-ALTER TABLE company ADD COLUMN pilar_type VARCHAR(30) NULL;

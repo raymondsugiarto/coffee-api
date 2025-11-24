@@ -1,1 +1,0 @@
-ALTER TABLE participant ADD COLUMN status varchar(50) DEFAULT 'INACTIVE';

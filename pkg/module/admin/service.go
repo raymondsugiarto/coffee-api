@@ -24,12 +24,11 @@ type Service interface {
 }
 
 type service struct {
-	repo               Repository
-	roleDefaultCompany string
+	repo Repository
 }
 
-func NewService(repo Repository, roleDefaultCompany string) Service {
-	return &service{repo, roleDefaultCompany}
+func NewService(repo Repository) Service {
+	return &service{repo}
 }
 
 func (s *service) UpdateProfileImage(ctx context.Context, id string, profileImageUrl string) error {
@@ -110,11 +109,11 @@ func (s *service) CreateAdminCompany(ctx context.Context, admin *entity.CreateAd
 	if admin.User == nil {
 		admin.User = user
 	}
-	admin.User.UserHasRoleDto = []entity.UserHasRoleDto{
-		{
-			RoleID: s.roleDefaultCompany,
-		},
-	}
+	// admin.User.UserHasRoleDto = []entity.UserHasRoleDto{
+	// 	{
+	// 		RoleID: s.roleDefaultCompany,
+	// 	},
+	// }
 	admin.User.EmailVerificationStatus = "UNVERIFIED"
 	admin.User.PhoneVerificationStatus = "UNVERIFIED"
 	admin.AdminType = string(entity.COMPANY)

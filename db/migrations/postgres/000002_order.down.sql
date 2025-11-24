@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS "order_payment";
+DROP TABLE IF EXISTS "order_item";
+DROP TABLE IF EXISTS "order";
+DROP TABLE IF EXISTS "item_company";
+DROP TABLE IF EXISTS "item";

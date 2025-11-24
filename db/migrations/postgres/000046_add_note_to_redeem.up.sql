@@ -1,1 +1,0 @@
-ALTER TABLE redeem ADD COLUMN note TEXT;

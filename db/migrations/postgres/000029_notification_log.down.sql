@@ -1,3 +1,0 @@
-DROP TABLE IF EXISTS notification;
-
-ALTER TABLE IF EXISTS investment DROP COLUMN code;

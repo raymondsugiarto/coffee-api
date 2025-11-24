@@ -8,13 +8,10 @@ import (
 
 type User struct {
 	concern.CommonWithIDs
-	OrganizationID          string
-	Organization            Organization
-	UserType                UserType
-	PhoneVerificationStatus IdentityStatus
-	EmailVerificationStatus IdentityStatus
-	UserCredential          []*UserCredential
-	UserHasRole             []*UserHasRole
+	OrganizationID string
+	Organization   Organization
+	UserType       UserType
+	UserCredential []*UserCredential
 }
 
 type UserType string

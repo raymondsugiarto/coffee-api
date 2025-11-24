@@ -1,1 +1,0 @@
-ALTER TABLE company DROP COLUMN pilar_type;
