@@ -31,18 +31,10 @@ WORKDIR /app
 RUN mkdir /app/config \
 	&& mkdir /app/logs \
 	&& mkdir /app/config/resources \
-    && mkdir /app/storage \
-    && mkdir /app/storage/admin \
-    && mkdir /app/storage/admin/profile \
-    && mkdir /app/storage/article \
-    && mkdir /app/storage/estatement \
-    && mkdir /app/static \
-    && mkdir /app/static/images
 
 COPY --from=builder /app/main /app/
 COPY --from=builder /app/config /app/config
 COPY --from=builder /app/db /app/db
-COPY --from=builder /app/static /app/static
 
 RUN chmod +x main \
     && chmod -R 770 /app/logs
