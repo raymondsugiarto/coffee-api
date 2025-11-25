@@ -50,7 +50,9 @@ INSERT INTO item (id, organization_id, code, name, price, created_at, updated_at
    ('92bf21ac-7759-4e03-972b-1209406ebd83', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'MAM', 'Mawaru Matcha', 15000, NOW(), NOW()),
    ('7f99a6c7-99b9-435c-ba2a-58ea77760e8d', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'CMM', 'Caramel Macchiato Matcha', 17000, NOW(), NOW()),
    ('9733b9e5-97c1-4135-829c-058fc282239c', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'SMM', 'Strawberry Macchiato Matcha', 18000, NOW(), NOW()),
-   ('963bcf80-b3a7-40fe-88c4-ff8c23a1d81d', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'MMM', 'Mango Macchiato Matcha', 18000, NOW(), NOW())
+   ('963bcf80-b3a7-40fe-88c4-ff8c23a1d81d', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'MMM', 'Mango Macchiato Matcha', 18000, NOW(), NOW()),
+   ('65b5a7a6-6eb1-4f3f-8ef8-797c676feae2', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'COK', 'Cokelat', 9000, NOW(), NOW()),
+   ('51d39c73-528e-43ff-9fb9-2bb4b659d3ba', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'LYC', 'Lychee Tea', 8000, NOW(), NOW())
 ;
 
 INSERT INTO item_company (id, organization_id, item_id, company_id, created_at, updated_at)
@@ -61,6 +63,8 @@ VALUES
    ('224e6173-1a50-40c7-89fc-21ce53087fef', '16f31f95-b356-4e96-b0df-c7f5052beb95', '816e96f9-27f1-4725-993c-053a51293362','a93150c9-eb99-4c62-8fc1-c414c8a0f78d', NOW(), NOW()),
    ('ea03e693-c420-4747-bd97-630e79de76fc', '16f31f95-b356-4e96-b0df-c7f5052beb95', '92bf21ac-7759-4e03-972b-1209406ebd83','a93150c9-eb99-4c62-8fc1-c414c8a0f78d', NOW(), NOW()),
    ('62d8d8df-da07-497e-a17d-fbe11512c745', '16f31f95-b356-4e96-b0df-c7f5052beb95', '7f99a6c7-99b9-435c-ba2a-58ea77760e8d','a93150c9-eb99-4c62-8fc1-c414c8a0f78d', NOW(), NOW()),
+   ('66f9a024-fb8d-4305-af68-358c77fe9918', '16f31f95-b356-4e96-b0df-c7f5052beb95', '65b5a7a6-6eb1-4f3f-8ef8-797c676feae2','a93150c9-eb99-4c62-8fc1-c414c8a0f78d', NOW(), NOW()),
+   ('7e9dbaa9-4fc7-43ac-8e46-162af3714a3f', '16f31f95-b356-4e96-b0df-c7f5052beb95', '51d39c73-528e-43ff-9fb9-2bb4b659d3ba','a93150c9-eb99-4c62-8fc1-c414c8a0f78d', NOW(), NOW()),
    
 
    -- MAWARU
@@ -68,7 +72,11 @@ VALUES
    ('6d34a537-f30d-4a41-9af4-8c105dd08f97', '16f31f95-b356-4e96-b0df-c7f5052beb95', '7f99a6c7-99b9-435c-ba2a-58ea77760e8d','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW()),
    ('284481f4-0be5-47b0-81e6-25fdf10e98b9', '16f31f95-b356-4e96-b0df-c7f5052beb95', '9733b9e5-97c1-4135-829c-058fc282239c','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW()),
    ('4193dd10-6658-4243-8114-c34e34130aba', '16f31f95-b356-4e96-b0df-c7f5052beb95', '963bcf80-b3a7-40fe-88c4-ff8c23a1d81d','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW()),
-   ('a542bb86-90ec-45d6-bd8c-460d0b8835c2', '16f31f95-b356-4e96-b0df-c7f5052beb95', '390aed07-5681-4a1e-8819-8a6f5aff3ee4','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW())
+   ('a542bb86-90ec-45d6-bd8c-460d0b8835c2', '16f31f95-b356-4e96-b0df-c7f5052beb95', '390aed07-5681-4a1e-8819-8a6f5aff3ee4','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW()),
+   ('1a0a20d2-d105-4d1c-ad6b-3943541416a4', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'a0ec3af5-dc96-4a66-ad43-0f27f69d00de','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW()),
+   ('19a74187-2531-43e4-aea9-a5be4b6b881b', '16f31f95-b356-4e96-b0df-c7f5052beb95', '65b5a7a6-6eb1-4f3f-8ef8-797c676feae2','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW()),
+   ('2910144a-8a25-461c-8c10-8e954bc7bf51', '16f31f95-b356-4e96-b0df-c7f5052beb95', '51d39c73-528e-43ff-9fb9-2bb4b659d3ba','3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', NOW(), NOW())
+
 ;
 
 
