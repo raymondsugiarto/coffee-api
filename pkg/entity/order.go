@@ -42,9 +42,11 @@ func (i *OrderInputDto) ToDto() *OrderDto {
 }
 
 type OrderCountDto struct {
-	TotalOrders   int     `json:"totalOrders"`
-	TotalQuantity int     `json:"totalQuantity"`
-	TotalAmount   float64 `json:"totalAmount"`
+	TotalOrders     int     `json:"totalOrders"`
+	TotalQuantity   int     `json:"totalQuantity"`
+	TotalAmount     float64 `json:"totalAmount"`
+	TotalQrAmount   float64 `json:"totalQrAmount"`
+	TotalCashAmount float64 `json:"totalCashAmount"`
 }
 type OrderDto struct {
 	ID             string            `json:"id"`

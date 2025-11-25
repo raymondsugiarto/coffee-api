@@ -96,8 +96,9 @@ func (r *repository) Count(ctx context.Context, req *entity.OrderFindAllRequest)
 	var m *entity.OrderCountDto
 	err := r.db.
 		Model(&model.Order{}).
+		Joins(`JOIN order_payment ON "order".id = order_payment.order_id`).
 		Where("DATE(order_at) = ? AND admin_id = ? AND company_id = ?", req.OrderDate, req.AdminID, req.CompanyID).
-		Select("count(1) as total_orders, sum(total_amount) as total_amount, sum(total_qty) as total_quantity").
+		Select("count(1) as total_orders, sum(total_amount) as total_amount, sum(total_qty) as total_quantity, sum(CASE WHEN payment_method_code = 'qr' THEN total_amount ELSE 0 END) as total_qr_amount, sum(CASE WHEN payment_method_code = 'cash' THEN total_amount ELSE 0 END) as total_cash_amount").
 		Take(&m).Error
 	if err != nil {
 		return nil, err
