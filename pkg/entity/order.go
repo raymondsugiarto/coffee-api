@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/raymondsugiarto/coffee-api/pkg/model"
+	"github.com/raymondsugiarto/coffee-api/pkg/shared/pagination"
 )
 
 type OrderInputDto struct {
@@ -40,6 +41,11 @@ func (i *OrderInputDto) ToDto() *OrderDto {
 	return d
 }
 
+type OrderCountDto struct {
+	TotalOrders   int     `json:"totalOrders"`
+	TotalQuantity int     `json:"totalQuantity"`
+	TotalAmount   float64 `json:"totalAmount"`
+}
 type OrderDto struct {
 	ID             string            `json:"id"`
 	OrganizationID string            `json:"-"`
@@ -107,7 +113,16 @@ type OrderFindAllRequest struct {
 	AdminID        string
 	CompanyID      string
 	MyEmployeeItem bool
+	OrderAt        *time.Time
+	OrderDate      string
 }
 
 func (r *OrderFindAllRequest) GenerateFilter() {
+	if r.OrderAt != nil {
+		r.Filter = append(r.Filter, pagination.FilterItem{
+			Field: "order_at",
+			Op:    "eq",
+			Val:   r.OrderAt.Format("2006-01-02"),
+		})
+	}
 }

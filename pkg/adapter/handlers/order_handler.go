@@ -52,3 +52,22 @@ func FindAllMyOrders(service order.Service) fiber.Handler {
 		return c.JSON(result)
 	}
 }
+
+func CountMyOrders(service order.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		itemReq := new(entity.OrderFindAllRequest)
+		if err := c.QueryParser(itemReq); err != nil {
+			return status.New(status.BadRequest, err)
+		}
+
+		userCred := shared.GetUserCredential(c.Context())
+		itemReq.AdminID = userCred.AdminID
+
+		result, err := service.Count(c.Context(), itemReq)
+		if err != nil {
+			return err
+		}
+
+		return c.JSON(result)
+	}
+}

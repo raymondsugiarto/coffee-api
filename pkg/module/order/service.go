@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/gofiber/fiber/v2/log"
 	gonanoid "github.com/matoous/go-nanoid/v2"
 	"github.com/raymondsugiarto/coffee-api/pkg/entity"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/company"
@@ -17,6 +18,7 @@ type Service interface {
 	Update(ctx context.Context, dto *entity.OrderDto) (*entity.OrderDto, error)
 	Delete(ctx context.Context, id string) error
 	FindAll(ctx context.Context, req *entity.OrderFindAllRequest) (*pagination.ResultPagination, error)
+	Count(ctx context.Context, req *entity.OrderFindAllRequest) (*entity.OrderCountDto, error)
 }
 
 type service struct {
@@ -61,4 +63,14 @@ func (s *service) FindAll(ctx context.Context, req *entity.OrderFindAllRequest) 
 	}
 	req.CompanyID = company.ID
 	return s.repo.FindAll(ctx, req)
+}
+
+func (s *service) Count(ctx context.Context, req *entity.OrderFindAllRequest) (*entity.OrderCountDto, error) {
+	company, err := s.companyService.FindCompanyByAdminID(ctx, req.AdminID)
+	if err != nil {
+		log.WithContext(ctx).Errorf("error count %v", err)
+		return nil, err
+	}
+	req.CompanyID = company.ID
+	return s.repo.Count(ctx, req)
 }

@@ -81,4 +81,5 @@ func OrderRouter(app fiber.Router,
 ) {
 	app.Post("/orders", handlers.CreateOrder(orderService))
 	app.Get("/orders", handlers.FindAllMyOrders(orderService))
+	app.Get("/orders/count", handlers.CountMyOrders(orderService))
 }

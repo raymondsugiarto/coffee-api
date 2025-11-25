@@ -15,6 +15,7 @@ type Repository interface {
 	Update(ctx context.Context, role *entity.OrderDto) (*entity.OrderDto, error)
 	Delete(ctx context.Context, id string) error
 	FindAll(ctx context.Context, req *entity.OrderFindAllRequest) (*pagination.ResultPagination, error)
+	Count(ctx context.Context, req *entity.OrderFindAllRequest) (*entity.OrderCountDto, error)
 }
 
 type repository struct {
@@ -64,7 +65,8 @@ func (r *repository) FindAll(ctx context.Context, req *entity.OrderFindAllReques
 
 	tbl := pagination.NewTable(r.db)
 	dataTable, err := tbl.Pagination(func(i interface{}) *gorm.DB {
-		return r.db.Model(&model.Order{}).Where("admin_id = ? AND company_id = ?", req.AdminID, req.CompanyID)
+		q := r.db.Model(&model.Order{}).Where("admin_id = ? AND company_id = ?", req.AdminID, req.CompanyID)
+		return q
 	}, &pagination.TableRequest{
 		Request:       req,
 		QueryField:    []string{},
@@ -88,4 +90,17 @@ func (r *repository) FindAll(ctx context.Context, req *entity.OrderFindAllReques
 		RowsPerPage: result.RowsPerPage,
 		TotalPages:  result.TotalPages,
 	}, nil
+}
+
+func (r *repository) Count(ctx context.Context, req *entity.OrderFindAllRequest) (*entity.OrderCountDto, error) {
+	var m *entity.OrderCountDto
+	err := r.db.
+		Model(&model.Order{}).
+		Where("DATE(order_at) = ? AND admin_id = ? AND company_id = ?", req.OrderDate, req.AdminID, req.CompanyID).
+		Select("count(1) as total_orders, sum(total_amount) as total_amount, sum(total_qty) as total_quantity").
+		Take(&m).Error
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
 }

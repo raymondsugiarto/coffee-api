@@ -21,7 +21,7 @@ VALUES
 -- Company entries
 INSERT INTO company (id, organization_id, phone_number, name, created_at, updated_at)
 VALUES 
-   ('a93150c9-eb99-4c62-8fc1-c414c8a0f78d', '16f31f95-b356-4e96-b0df-c7f5052beb95', '1234567890', 'Sekian',  NOW(), NOW())
+   ('a93150c9-eb99-4c62-8fc1-c414c8a0f78d', '16f31f95-b356-4e96-b0df-c7f5052beb95', '1234567890', 'Sekian',  NOW(), NOW()),
    ('3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', '16f31f95-b356-4e96-b0df-c7f5052beb95', '1234567890', 'Mawaru',  NOW(), NOW())
 ;
 
