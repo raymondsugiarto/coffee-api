@@ -95,11 +95,12 @@ func (r *repository) FindAll(ctx context.Context, req *entity.OrderFindAllReques
 
 func (r *repository) Count(ctx context.Context, req *entity.OrderFindAllRequest) (*entity.OrderCountDto, error) {
 	startAt := req.OrderDate + " 17:00:00"
-	endAt := req.OrderDate + " 17:00:00"
-	// Parse the date and add 1 day
-	if parsedDate, err := time.Parse("2006-01-02", req.OrderDate); err == nil {
-		endAt = parsedDate.AddDate(0, 0, 1).Format("2006-01-02") + " 17:00:00"
+	// Parse the date and subtract 1 day
+	if t, err := time.Parse("2006-01-02 15:04:05", startAt); err == nil {
+		startAt = t.AddDate(0, 0, -1).Format("2006-01-02 15:04:05")
 	}
+	endAt := req.OrderDate + " 17:00:00"
+
 	var m *entity.OrderCountDto
 	err := r.db.
 		Model(&model.Order{}).
