@@ -13,6 +13,7 @@ import (
 	"github.com/raymondsugiarto/coffee-api/pkg/module/company"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/item"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/order"
+	orderitem "github.com/raymondsugiarto/coffee-api/pkg/module/order/order_item"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/user"
 	usercredential "github.com/raymondsugiarto/coffee-api/pkg/module/user-credential"
 
@@ -53,6 +54,10 @@ func InitRouter(app fiber.Router) {
 	orderRepo := order.NewRepository(dbConn)
 	orderService := order.NewService(orderRepo, companyService)
 
+	// Order
+	orderItemRepo := orderitem.NewRepository(dbConn)
+	orderItemService := orderitem.NewService(orderItemRepo, companyService)
+
 	// Middleware
 	// api := app.Group("/api", middleware.Protected())
 	auth := app.Group("/api/auth")
@@ -61,6 +66,7 @@ func InitRouter(app fiber.Router) {
 	api := app.Group("/api/", middleware.Protected())
 	ItemRouter(api, itemService)
 	OrderRouter(api, orderService)
+	OrderItemRouter(api, orderItemService)
 }
 
 func AuthRouter(app fiber.Router,
@@ -82,4 +88,10 @@ func OrderRouter(app fiber.Router,
 	app.Post("/orders", handlers.CreateOrder(orderService))
 	app.Get("/orders", handlers.FindAllMyOrders(orderService))
 	app.Get("/orders/count", handlers.CountMyOrders(orderService))
+}
+
+func OrderItemRouter(app fiber.Router,
+	orderItemService orderitem.Service,
+) {
+	app.Get("/order-items/count", handlers.CountMyOrderItems(orderItemService))
 }

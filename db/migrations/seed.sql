@@ -81,7 +81,30 @@ VALUES
 
 
 
-
+INSERT INTO "user" (id, organization_id, user_type, created_at, updated_at)
+ VALUES 
+    ('e55be757-5f65-4423-92b7-5b573cba374b', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'ADMIN', NOW(), NOW()), -- adm
+    ('3596df3b-13aa-473d-b4d7-2a744b504af3', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'ADMIN', NOW(), NOW()), -- e1
+    ('adc0d06f-cc21-4419-9936-d249e8a2494e', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'ADMIN', NOW(), NOW()) -- e2
+;  
+INSERT INTO admin (id, organization_id, user_id, admin_type, phone_number, email, first_name, last_name, created_at, updated_at)
+VALUES 
+   ('7c167f13-0587-4a35-9298-dded451ca929', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'e55be757-5f65-4423-92b7-5b573cba374b', 'ADMIN', '08179340556', 'adm@gmail.com', 'Admin', '', NOW(), NOW()),
+   ('1ce4485c-bb03-4224-bd7c-d4c0f852db43', '16f31f95-b356-4e96-b0df-c7f5052beb95', '3596df3b-13aa-473d-b4d7-2a744b504af3', 'EMPLOYEE', '081123456789', 'e1@gmail.com', 'Mita', '', NOW(), NOW()),
+   ('b916d6a4-f325-465e-8c91-308f03d01405', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'adc0d06f-cc21-4419-9936-d249e8a2494e', 'EMPLOYEE', '081123456780', 'e2@gmail.com', 'Berry', '', NOW(), NOW())
+;
+INSERT INTO admin_company (id, organization_id, company_id, admin_id, created_at, updated_at)
+VALUES 
+   ('9438e093-e944-4a02-8a46-07cac69e7be2', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'a93150c9-eb99-4c62-8fc1-c414c8a0f78d', '7c167f13-0587-4a35-9298-dded451ca929',  NOW(), NOW()),
+   ('16cdad6a-f3fd-4b7e-9a2e-764ad468d080', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'a93150c9-eb99-4c62-8fc1-c414c8a0f78d', '1ce4485c-bb03-4224-bd7c-d4c0f852db43',  NOW(), NOW()),
+   ('45ec3144-92d7-4641-a970-4b3e11f5a4ae', '16f31f95-b356-4e96-b0df-c7f5052beb95', '3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', 'b916d6a4-f325-465e-8c91-308f03d01405',  NOW(), NOW())
+;
+INSERT INTO user_credential (id, organization_id, user_id, username, password, created_at, updated_at)
+ VALUES 
+   ('1918b887f-6bbd-4c85-a944-e04a6bac5a6c', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'e55be757-5f65-4423-92b7-5b573cba374b', 'admin', '$2a$07$rXsQxQHRwxwHYNTzHKTl.eilofdCZ9Ci0TTJmLdV6I7rxsYn/O74.', NOW(), NOW()), -- pass admin
+   ('3eb49372-e394-4ee1-8871-00fa7e5e9a77', '16f31f95-b356-4e96-b0df-c7f5052beb95', '3596df3b-13aa-473d-b4d7-2a744b504af3', '081123456789', '$2a$07$rXsQxQHRwxwHYNTzHKTl.eilofdCZ9Ci0TTJmLdV6I7rxsYn/O74.', NOW(), NOW()),
+   ('99ce7f88-dd72-4426-88c9-1775d3c30ce1', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'adc0d06f-cc21-4419-9936-d249e8a2494e', '081123456780', '$2a$07$rXsQxQHRwxwHYNTzHKTl.eilofdCZ9Ci0TTJmLdV6I7rxsYn/O74.', NOW(), NOW())
+;
 
 
 

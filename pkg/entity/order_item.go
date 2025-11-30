@@ -52,3 +52,9 @@ func (d *OrderItemDto) ToModel() *model.OrderItem {
 	}
 	return m
 }
+
+type OrderItemPerItemCountDto struct {
+	ItemName   string  `json:"itemName"`
+	TotalQty   int     `json:"totalQty"`
+	TotalPrice float64 `json:"totalPrice"`
+}
