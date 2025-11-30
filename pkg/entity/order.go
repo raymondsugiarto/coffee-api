@@ -78,7 +78,7 @@ func NewOrderDtoFromModel(m *model.Order) *OrderDto {
 		AdminID:        m.AdminID,
 		CustomerID:     m.CustomerID,
 		Code:           m.Code,
-		OrderAt:        m.OrderAt,
+		OrderAt:        m.OrderAt.Add(7 * time.Hour),
 		TotalQty:       m.TotalQty,
 		TotalAmount:    m.TotalAmount,
 		Status:         m.Status,

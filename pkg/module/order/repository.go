@@ -2,6 +2,7 @@ package order
 
 import (
 	"context"
+	"time"
 
 	"github.com/raymondsugiarto/coffee-api/pkg/entity"
 	"github.com/raymondsugiarto/coffee-api/pkg/model"
@@ -93,11 +94,17 @@ func (r *repository) FindAll(ctx context.Context, req *entity.OrderFindAllReques
 }
 
 func (r *repository) Count(ctx context.Context, req *entity.OrderFindAllRequest) (*entity.OrderCountDto, error) {
+	startAt := req.OrderDate + " 17:00:00"
+	endAt := req.OrderDate + " 17:00:00"
+	// Parse the date and add 1 day
+	if parsedDate, err := time.Parse("2006-01-02", req.OrderDate); err == nil {
+		endAt = parsedDate.AddDate(0, 0, 1).Format("2006-01-02") + " 17:00:00"
+	}
 	var m *entity.OrderCountDto
 	err := r.db.
 		Model(&model.Order{}).
 		Joins(`JOIN order_payment ON "order".id = order_payment.order_id`).
-		Where("DATE(order_at) = ? AND admin_id = ? AND company_id = ?", req.OrderDate, req.AdminID, req.CompanyID).
+		Where("order_at >= ? AND order_at < ? AND admin_id = ? AND company_id = ?", startAt, endAt, req.AdminID, req.CompanyID).
 		Select("count(1) as total_orders, sum(total_amount) as total_amount, sum(total_qty) as total_quantity, sum(CASE WHEN payment_method_code = 'qr' THEN total_amount ELSE 0 END) as total_qr_amount, sum(CASE WHEN payment_method_code = 'cash' THEN total_amount ELSE 0 END) as total_cash_amount").
 		Take(&m).Error
 	if err != nil {
