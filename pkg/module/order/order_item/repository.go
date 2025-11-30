@@ -27,6 +27,8 @@ func (r *repository) Count(ctx context.Context, req *entity.OrderFindAllRequest)
 	if t, err := time.Parse("2006-01-02 15:04:05", startAt); err == nil {
 		startAt = t.AddDate(0, 0, -1).Format("2006-01-02 15:04:05")
 	}
+	endAt := req.OrderDate + " 17:00:00"
+
 	var m []entity.OrderItemPerItemCountDto
 	subquery := r.db.Model(&model.OrderItem{}).
 		Joins(`JOIN "order" ON "order".id = order_item.order_id`).
