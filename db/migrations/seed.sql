@@ -55,6 +55,12 @@ INSERT INTO item (id, organization_id, code, name, price, created_at, updated_at
    ('51d39c73-528e-43ff-9fb9-2bb4b659d3ba', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'LYC', 'Lychee Tea', 8000, NOW(), NOW())
 ;
 
+INSERT INTO item (id, organization_id, code, name, price, created_at, updated_at)
+ VALUES 
+   ('4fb78034-75c1-4d7d-ab15-038747161dcf', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'MAY', 'Mango Yakult', 9000, NOW(), NOW()),
+   ('09643ec2-41c2-4dc3-8f53-ab3b791ed11f', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'LEY', 'Lychee Yakult', 8000, NOW(), NOW())
+;
+
 INSERT INTO item_company (id, organization_id, item_id, company_id, created_at, updated_at)
 VALUES 
    -- SEKIAN
@@ -79,35 +85,44 @@ VALUES
 
 ;
 
-
+INSERT INTO item_company (id, organization_id, item_id, company_id, created_at, updated_at)
+VALUES 
+   -- SEKIAN
+   ('dcfc426c-a96a-4685-8041-8d8936ca775b', '16f31f95-b356-4e96-b0df-c7f5052beb95', '4fb78034-75c1-4d7d-ab15-038747161dcf','a93150c9-eb99-4c62-8fc1-c414c8a0f78d', NOW(), NOW()),
+   ('3647ee80-8b25-4451-b15e-e85d6361b7e4', '16f31f95-b356-4e96-b0df-c7f5052beb95', '09643ec2-41c2-4dc3-8f53-ab3b791ed11f','a93150c9-eb99-4c62-8fc1-c414c8a0f78d', NOW(), NOW())
+;
 
 INSERT INTO "user" (id, organization_id, user_type, created_at, updated_at)
  VALUES 
-    ('adc0d06f-cc21-4419-9936-d249e8a2494e', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'ADMIN', NOW(), NOW()) -- e2
+    ('aaf51601-4c89-4547-9b66-f901f19c4e26', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'ADMIN', NOW(), NOW()),-- e2
+    ('331a3830-6e22-4bf3-aa09-3f8340a871e2', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'ADMIN', NOW(), NOW()) -- e2
 ;  
 INSERT INTO admin (id, organization_id, user_id, admin_type, phone_number, email, first_name, last_name, created_at, updated_at)
 VALUES 
-   ('b916d6a4-f325-465e-8c91-308f03d01405', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'adc0d06f-cc21-4419-9936-d249e8a2494e', 'EMPLOYEE', '0811234xxx', 'e2@gmail.com', 'Berry', '', NOW(), NOW())
+   ('79169b7d-ffaf-46b4-9475-23ae206ffe65', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'aaf51601-4c89-4547-9b66-f901f19c4e26', 'EMPLOYEE', '0812121212', 'e2@gmail.com', 'Rider 1', '', NOW(), NOW()),
+   ('9f5bb25f-ca8c-4a12-851e-81d3adef8f7a', '16f31f95-b356-4e96-b0df-c7f5052beb95', '331a3830-6e22-4bf3-aa09-3f8340a871e2', 'EMPLOYEE', '0823232323', 'e2@gmail.com', 'Rider 2', '', NOW(), NOW())
 ;
 INSERT INTO admin_company (id, organization_id, company_id, admin_id, created_at, updated_at)
 VALUES 
-   ('45ec3144-92d7-4641-a970-4b3e11f5a4ae', '16f31f95-b356-4e96-b0df-c7f5052beb95', '3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', 'b916d6a4-f325-465e-8c91-308f03d01405',  NOW(), NOW())
+   ('a5971e36-6891-4983-997f-8f515301dc0f', '16f31f95-b356-4e96-b0df-c7f5052beb95', '3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', '79169b7d-ffaf-46b4-9475-23ae206ffe65',  NOW(), NOW()),
+   ('835de52c-a861-4920-927f-c2737966ff20', '16f31f95-b356-4e96-b0df-c7f5052beb95', '3b80cdb0-5a52-42e5-9a9b-38f7c3e9164f', '9f5bb25f-ca8c-4a12-851e-81d3adef8f7a',  NOW(), NOW())
 ;
 INSERT INTO user_credential (id, organization_id, user_id, username, password, created_at, updated_at)
  VALUES 
-   ('99ce7f88-dd72-4426-88c9-1775d3c30ce1', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'adc0d06f-cc21-4419-9936-d249e8a2494e', '0811234xxx', '$2a$07$rXsQxQHRwxwHYNTzHKTl.eilofdCZ9Ci0TTJmLdV6I7rxsYn/O74.', NOW(), NOW())
+   ('1ee8a3d9-6236-4ec7-af98-4bb38debd2e3', '16f31f95-b356-4e96-b0df-c7f5052beb95', 'aaf51601-4c89-4547-9b66-f901f19c4e26', '0812121212', '$2a$07$rXsQxQHRwxwHYNTzHKTl.eilofdCZ9Ci0TTJmLdV6I7rxsYn/O74.', NOW(), NOW()),
+   ('b063bd67-b066-4f71-b1a3-b220b523c3c5', '16f31f95-b356-4e96-b0df-c7f5052beb95', '331a3830-6e22-4bf3-aa09-3f8340a871e2', '0823232323', '$2a$07$rXsQxQHRwxwHYNTzHKTl.eilofdCZ9Ci0TTJmLdV6I7rxsYn/O74.', NOW(), NOW())
 ;
 
 
 
-9f5bb25f-ca8c-4a12-851e-81d3adef8f7a
-79169b7d-ffaf-46b4-9475-23ae206ffe65
-a5971e36-6891-4983-997f-8f515301dc0f
-835de52c-a861-4920-927f-c2737966ff20
-aaf51601-4c89-4547-9b66-f901f19c4e26
-331a3830-6e22-4bf3-aa09-3f8340a871e2
-b063bd67-b066-4f71-b1a3-b220b523c3c5
-1ee8a3d9-6236-4ec7-af98-4bb38debd2e3
+
+
+
+
+
+
+
+
 
 
 

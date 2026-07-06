@@ -1,0 +1,1 @@
+{"nodes": [{"id": "github_workflows_deploy_deploy", "label": "Deploy Job", "file_type": "concept", "source_file": ".github/workflows/deploy.yml", "section": "jobs.deploy", "description": "GitHub Actions deploy job that builds and pushes the coffee-api Docker image on push to main."}], "edges": [], "hyperedges": []}

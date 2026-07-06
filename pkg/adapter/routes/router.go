@@ -11,9 +11,11 @@ import (
 	"github.com/raymondsugiarto/coffee-api/pkg/module/authentication"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/authentication/token"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/company"
+	"github.com/raymondsugiarto/coffee-api/pkg/module/driver"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/item"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/order"
 	orderitem "github.com/raymondsugiarto/coffee-api/pkg/module/order/order_item"
+	stocksession "github.com/raymondsugiarto/coffee-api/pkg/module/stock_session"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/user"
 	usercredential "github.com/raymondsugiarto/coffee-api/pkg/module/user-credential"
 
@@ -58,6 +60,14 @@ func InitRouter(app fiber.Router) {
 	orderItemRepo := orderitem.NewRepository(dbConn)
 	orderItemService := orderitem.NewService(orderItemRepo, companyService)
 
+	// Driver (employees filtered)
+	driverService := driver.NewService(dbConn)
+
+	// Stock Session (with embedded item picker service)
+	stockSessionRepo := stocksession.NewRepository(dbConn)
+	stockSessionService := stocksession.NewService(stockSessionRepo, dbConn)
+	stockSessionItemService := stocksession.NewItemService(dbConn)
+
 	// Middleware
 	// api := app.Group("/api", middleware.Protected())
 	auth := app.Group("/api/auth")
@@ -67,6 +77,9 @@ func InitRouter(app fiber.Router) {
 	ItemRouter(api, itemService)
 	OrderRouter(api, orderService)
 	OrderItemRouter(api, orderItemService)
+	ProductRouter(api, stockSessionItemService)
+	DriverRouter(api, driverService)
+	StockSessionRouter(api, stockSessionService, stockSessionItemService)
 }
 
 func AuthRouter(app fiber.Router,
@@ -94,4 +107,33 @@ func OrderItemRouter(app fiber.Router,
 	orderItemService orderitem.Service,
 ) {
 	app.Get("/order-items/count", handlers.CountMyOrderItems(orderItemService))
+}
+
+func ProductRouter(app fiber.Router, itemService stocksession.ItemService) {
+	app.Get("/products", handlers.FindAllStockSessionItems(itemService))
+	app.Get("/products/:id", handlers.GetStockSessionItem(itemService))
+}
+
+func DriverRouter(app fiber.Router, driverService driver.Service) {
+	app.Get("/employees", handlers.FindAllDrivers(driverService))
+}
+
+func StockSessionRouter(app fiber.Router, ssService stocksession.Service, itemService stocksession.ItemService) {
+	app.Post("/stock-session/open", handlers.OpenStockSession(ssService))
+	app.Get("/stock-session", handlers.FindAllStockSessions(ssService))
+	app.Get("/stock-session/today", handlers.GetTodayStockSession(ssService))
+	app.Get("/stock-session/:id", handlers.GetStockSession(ssService))
+	app.Put("/stock-session/:id", handlers.UpdateStockSession(ssService))
+	app.Post("/stock-session/:id/close", handlers.CloseStockSession(ssService))
+
+	// Item picker (reuses existing `item` table)
+	app.Get("/products", handlers.FindAllStockSessionItems(itemService))
+	app.Get("/products/:id", handlers.GetStockSessionItem(itemService))
+
+	// Reports
+	app.Get("/report/dashboard", handlers.GetDashboard(ssService))
+	app.Get("/report/daily", handlers.GetDailyReport(ssService))
+	app.Get("/report/monthly", handlers.GetMonthlyReport(ssService))
+	app.Get("/report/top-products", handlers.GetTopProducts(ssService))
+	app.Get("/report/employee-performance", handlers.GetEmployeePerformance(ssService))
 }

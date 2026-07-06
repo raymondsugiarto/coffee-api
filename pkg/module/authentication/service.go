@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/gofiber/fiber/v2/log"
 	e "github.com/raymondsugiarto/coffee-api/pkg/entity"
 	entity "github.com/raymondsugiarto/coffee-api/pkg/entity/authentication"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/admin"
@@ -38,6 +39,7 @@ func NewService(
 func (s *service) SignIn(ctx context.Context, request *entity.LoginRequestDto) (*entity.LoginDto, error) {
 	userCredentialDto, err := s.userCredentialService.FindByUsername(ctx, request.Username)
 	if err != nil {
+		log.WithContext(ctx).Errorf("SignIn - s.userCredentialService.FindByUsername: %v", err)
 		return nil, err
 	}
 
@@ -56,7 +58,7 @@ func (s *service) SignIn(ctx context.Context, request *entity.LoginRequestDto) (
 
 	pp, _ := utils.HashPassword(request.Password)
 	fmt.Printf("password hash: %+v\n", pp)
-	// fmt.Printf("userCredentialData: %+v ::: %+v\n", request.Password, userCredentialDto.Password)
+	fmt.Printf("userCredentialData: %+v ::: %+v\n", request.Password, userCredentialDto.Password)
 	if !utils.CheckPasswordHash(request.Password, userCredentialDto.Password) {
 		return nil, errors.New("invalidPassword")
 	}

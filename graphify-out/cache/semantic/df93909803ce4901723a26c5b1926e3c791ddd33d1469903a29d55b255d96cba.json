@@ -1,0 +1,1 @@
+{"nodes": [{"id": "config_example_aws_aws", "label": "AWS", "file_type": "concept", "source_file": "config/example/aws.yml", "section": "aws", "description": "AWS credentials configuration with accessKeyId and secretKeyAccess."}], "edges": [], "hyperedges": []}

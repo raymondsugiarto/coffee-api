@@ -1,0 +1,1 @@
+{"nodes": [{"id": "config_example_server_server_rest", "label": "Server (REST)", "file_type": "concept", "source_file": "config/example/server.yml", "section": "server.rest", "description": "REST server configuration (name, host, port 3000, tls, timeout, secretKey)."}], "edges": [], "hyperedges": []}

@@ -1,0 +1,1 @@
+{"nodes": [{"id": "config_example_cron_cron", "label": "Cron", "file_type": "concept", "source_file": "config/example/cron.yml", "section": "cron", "description": "Cron job configuration toggling the monthly fee cron job."}], "edges": [], "hyperedges": []}

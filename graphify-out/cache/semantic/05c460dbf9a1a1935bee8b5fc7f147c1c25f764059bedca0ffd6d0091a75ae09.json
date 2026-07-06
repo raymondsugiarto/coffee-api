@@ -1,0 +1,1 @@
+{"nodes": [{"id": "config_example_logger_logger", "label": "Logger", "file_type": "concept", "source_file": "config/example/logger.yml", "section": "logger", "description": "Logger configuration with console and file sinks (enable, json, level, path)."}], "edges": [], "hyperedges": []}

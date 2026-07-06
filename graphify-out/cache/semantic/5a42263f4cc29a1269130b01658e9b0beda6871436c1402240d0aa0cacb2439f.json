@@ -1,0 +1,1 @@
+{"nodes": [{"id": "config_example_role_role", "label": "Role", "file_type": "concept", "source_file": "config/example/role.yml", "section": "role", "description": "Role identifiers (company role UUID) used by the authentication layer."}], "edges": [], "hyperedges": []}

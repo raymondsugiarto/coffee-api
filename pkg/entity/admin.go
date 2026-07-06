@@ -1,6 +1,9 @@
 package entity
 
-import "github.com/raymondsugiarto/coffee-api/pkg/model"
+import (
+	"github.com/raymondsugiarto/coffee-api/pkg/model"
+	"github.com/raymondsugiarto/coffee-api/pkg/shared/pagination"
+)
 
 type AdminDto struct {
 	ID              string   `json:"id"`
@@ -95,4 +98,9 @@ func (dto *CreateAdminCompany) FromModel(m *model.Admin) *CreateAdminCompany {
 	dto.ProfileImageUrl = m.ProfileImageUrl
 	dto.OrganizationID = m.User.OrganizationID
 	return dto
+}
+
+type DriverFindAllRequest struct {
+	pagination.GetListRequest
+	Query string
 }
