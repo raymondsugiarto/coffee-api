@@ -27,11 +27,82 @@ func NewRepository(db *gorm.DB) Repository {
 }
 
 func (r *repository) Create(ctx context.Context, dto *entity.StockSessionDto) (*entity.StockSessionDto, error) {
-	m := dto.ToModel()
-	if err := r.db.Create(m).Error; err != nil {
-		return nil, err
-	}
-	return entity.NewStockSessionDtoFromModel(m), nil
+	var result *entity.StockSessionDto
+	err := r.db.Transaction(func(tx *gorm.DB) error {
+		m := dto.ToModel()
+
+		// Two-phase write so we never rely on GORM association
+		// auto-insert. Insert the parent first (without items), then
+		// the child stock_session_item rows explicitly. This:
+		//   1. Makes the wire-level intent clear in Postgres logs.
+		//   2. Avoids accidental item creation when the request
+		//      carries a partial payload (e.g. an empty `items`
+		//      slice).
+		//   3. Lets us reject orphan item rows cleanly without GORM
+		//      silent cascade.
+		parent := &model.StockSession{
+			OrganizationID: m.OrganizationID,
+			Date:           m.Date,
+			EmployeeID:     m.EmployeeID,
+			Status:         m.Status,
+			OpenedAt:       m.OpenedAt,
+			ClosedAt:       m.ClosedAt,
+			TotalSales:     m.TotalSales,
+			TotalCash:      m.TotalCash,
+			TotalQris:      m.TotalQris,
+			TotalOther:     m.TotalOther,
+			TotalPayment:   m.TotalPayment,
+			Difference:     m.Difference,
+			TotalItems:     m.TotalItems,
+			// Salary columns: open-time values are 0 today because
+			// the close path is what triggers RecomputeSalary, but
+			// we deliberately round-trip them so a future change to
+			// Open-time resolution (e.g. seed the row with the
+			// employee's company default) lands in the DB without a
+			// schema migration.
+			TotalCommission: m.TotalCommission,
+			MealAllowance:   m.MealAllowance,
+			Attendance:      m.Attendance,
+			BonusTarget:     m.BonusTarget,
+			TotalSalary:     m.TotalSalary,
+			// cash_debt is 0 at open time; close path writes it.
+			CashDebt:  m.CashDebt,
+			Notes:     m.Notes,
+			CreatedBy: m.CreatedBy,
+		}
+		if err := tx.Omit("Items", "Payments", "Adjustments", "Logs").Create(parent).Error; err != nil {
+			return err
+		}
+
+		// Insert stock_session_item rows explicitly. We deliberately
+		// do NOT rely on GORM's association auto-save here — that
+		// would also try to INSERT into the item table whenever
+		// `dto.Items[i].Item` is populated. The Omit("Item") is
+		// belt-and-braces so even a stray nested Item cannot leak.
+		// All we persist is the item_id reference + the row's own
+		// snapshot fields.
+		for _, it := range dto.Items {
+			item := it.ToModel()
+			item.SessionID = parent.ID
+			if err := tx.Omit("Item").Create(item).Error; err != nil {
+				return err
+			}
+		}
+
+		// Reload with associations so the call-site gets a fully
+		// hydrated DTO back (items, payments, etc.).
+		var reloaded model.StockSession
+		if err := tx.
+			Preload("Employee").
+			Preload("Items").
+			Preload("Items.Item").
+			Where("id = ?", parent.ID).First(&reloaded).Error; err != nil {
+			return err
+		}
+		result = entity.NewStockSessionDtoFromModel(&reloaded)
+		return nil
+	})
+	return result, err
 }
 
 func (r *repository) Get(ctx context.Context, id string) (*entity.StockSessionDto, error) {

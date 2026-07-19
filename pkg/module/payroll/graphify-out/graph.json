@@ -1,0 +1,771 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "repository.go",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "repository_go_repository",
+      "community": 3,
+      "norm_label": "repository.go"
+    },
+    {
+      "label": "Repository",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "payroll_repository",
+      "community": 3,
+      "norm_label": "repository"
+    },
+    {
+      "label": "DB",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "db",
+      "community": 3,
+      "norm_label": "db"
+    },
+    {
+      "label": "NewRepository()",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "repository_newrepository",
+      "community": 3,
+      "norm_label": "newrepository()"
+    },
+    {
+      "label": ".Simulate()",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "repository_simulate",
+      "community": 5,
+      "norm_label": ".simulate()"
+    },
+    {
+      "label": "Context",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "repository_go_context",
+      "community": 2,
+      "norm_label": "context"
+    },
+    {
+      "label": "Time",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "time",
+      "community": 5,
+      "norm_label": "time"
+    },
+    {
+      "label": "SimulatePayrollResultDto",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "repository_go_simulatepayrollresultdto",
+      "community": 5,
+      "norm_label": "simulatepayrollresultdto"
+    },
+    {
+      "label": ".Save()",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "repository_save",
+      "community": 2,
+      "norm_label": ".save()"
+    },
+    {
+      "label": "EmployeeSalaryDto",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "repository_go_employeesalarydto",
+      "community": 2,
+      "norm_label": "employeesalarydto"
+    },
+    {
+      "label": ".saveTx()",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "repository_savetx",
+      "community": 2,
+      "norm_label": ".savetx()"
+    },
+    {
+      "label": ".FindOne()",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L125",
+      "_origin": "ast",
+      "id": "repository_findone",
+      "community": 2,
+      "norm_label": ".findone()"
+    },
+    {
+      "label": ".FindAll()",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L144",
+      "_origin": "ast",
+      "id": "repository_findall",
+      "community": 4,
+      "norm_label": ".findall()"
+    },
+    {
+      "label": "EmployeeSalaryFindAllRequest",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L144",
+      "_origin": "ast",
+      "id": "repository_go_employeesalaryfindallrequest",
+      "community": 4,
+      "norm_label": "employeesalaryfindallrequest"
+    },
+    {
+      "label": "ResultPagination",
+      "file_type": "code",
+      "source_file": "repository.go",
+      "source_location": "L144",
+      "_origin": "ast",
+      "id": "repository_go_resultpagination",
+      "community": 4,
+      "norm_label": "resultpagination"
+    },
+    {
+      "label": "service.go",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "service",
+      "community": 1,
+      "norm_label": "service.go"
+    },
+    {
+      "label": "Service",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "payroll_service",
+      "community": 1,
+      "norm_label": "service"
+    },
+    {
+      "label": "Repository",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "service_go_repository",
+      "community": 1,
+      "norm_label": "repository"
+    },
+    {
+      "label": "NewService()",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "service_newservice",
+      "community": 1,
+      "norm_label": "newservice()"
+    },
+    {
+      "label": ".Simulate()",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "service_simulate",
+      "community": 1,
+      "norm_label": ".simulate()"
+    },
+    {
+      "label": "Context",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "service_go_context",
+      "community": 0,
+      "norm_label": "context"
+    },
+    {
+      "label": "SimulatePayrollRequest",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "simulatepayrollrequest",
+      "community": 1,
+      "norm_label": "simulatepayrollrequest"
+    },
+    {
+      "label": "SimulatePayrollResultDto",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "service_go_simulatepayrollresultdto",
+      "community": 1,
+      "norm_label": "simulatepayrollresultdto"
+    },
+    {
+      "label": ".Save()",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "service_save",
+      "community": 0,
+      "norm_label": ".save()"
+    },
+    {
+      "label": "SavePayrollRequest",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "savepayrollrequest",
+      "community": 0,
+      "norm_label": "savepayrollrequest"
+    },
+    {
+      "label": "EmployeeSalaryDto",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "service_go_employeesalarydto",
+      "community": 0,
+      "norm_label": "employeesalarydto"
+    },
+    {
+      "label": ".FindAll()",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "service_findall",
+      "community": 0,
+      "norm_label": ".findall()"
+    },
+    {
+      "label": "EmployeeSalaryFindAllRequest",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "service_go_employeesalaryfindallrequest",
+      "community": 0,
+      "norm_label": "employeesalaryfindallrequest"
+    },
+    {
+      "label": "ResultPagination",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "service_go_resultpagination",
+      "community": 0,
+      "norm_label": "resultpagination"
+    },
+    {
+      "label": ".FindOne()",
+      "file_type": "code",
+      "source_file": "service.go",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "service_findone",
+      "community": 0,
+      "norm_label": ".findone()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "repository_go_repository",
+      "target": "payroll_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "repository_go_repository",
+      "target": "repository_newrepository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "field",
+      "source": "payroll_repository",
+      "target": "db",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L144",
+      "weight": 1.0,
+      "source": "payroll_repository",
+      "target": "repository_findall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L125",
+      "weight": 1.0,
+      "source": "payroll_repository",
+      "target": "repository_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "payroll_repository",
+      "target": "repository_save",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "payroll_repository",
+      "target": "repository_savetx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "payroll_repository",
+      "target": "repository_simulate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "repository_newrepository",
+      "target": "payroll_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_newrepository",
+      "target": "db",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_simulate",
+      "target": "repository_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "repository_simulate",
+      "target": "repository_go_simulatepayrollresultdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L40",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_simulate",
+      "target": "time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L144",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_findall",
+      "target": "repository_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L125",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_findone",
+      "target": "repository_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L82",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_save",
+      "target": "repository_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L91",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_savetx",
+      "target": "repository_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L82",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "repository_save",
+      "target": "repository_go_employeesalarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "repository_save",
+      "target": "repository_savetx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L125",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "repository_findone",
+      "target": "repository_go_employeesalarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L91",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "repository_savetx",
+      "target": "repository_go_employeesalarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L144",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "repository_findall",
+      "target": "repository_go_employeesalaryfindallrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "repository.go",
+      "source_location": "L144",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "repository_findall",
+      "target": "repository_go_resultpagination",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "service",
+      "target": "payroll_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "service",
+      "target": "service_newservice",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "payroll_service",
+      "target": "service_findall",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "payroll_service",
+      "target": "service_findone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "field",
+      "source": "payroll_service",
+      "target": "service_go_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "payroll_service",
+      "target": "service_save",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "payroll_service",
+      "target": "service_simulate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "service_newservice",
+      "target": "payroll_service",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_newservice",
+      "target": "service_go_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_simulate",
+      "target": "service_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "service_simulate",
+      "target": "service_go_simulatepayrollresultdto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L27",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_simulate",
+      "target": "simulatepayrollrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L70",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_findall",
+      "target": "service_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L77",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_findone",
+      "target": "service_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L47",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_save",
+      "target": "service_go_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L47",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_save",
+      "target": "savepayrollrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L47",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "service_save",
+      "target": "service_go_employeesalarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L77",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "service_findone",
+      "target": "service_go_employeesalarydto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L70",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "source": "service_findall",
+      "target": "service_go_employeesalaryfindallrequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "service.go",
+      "source_location": "L70",
+      "weight": 1.0,
+      "context": "return_type",
+      "source": "service_findall",
+      "target": "service_go_resultpagination",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "bf90c990320e6c4f56ff5c4ff076224ab56080a3"
+}

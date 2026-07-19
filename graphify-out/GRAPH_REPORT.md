@@ -1,12 +1,18 @@
-# Graph Report - .  (2026-07-04)
+# Graph Report - coffee-api  (2026-07-18)
 
 ## Corpus Check
-- Corpus is ~26,639 words - fits in a single context window. You may not need a graph.
+- 172 files · ~42,134 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 974 nodes · 1575 edges · 87 communities (79 shown, 8 thin omitted)
-- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 125 edges (avg confidence: 0.8)
+- 1309 nodes · 2181 edges · 112 communities (102 shown, 10 thin omitted)
+- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 205 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `bf90c990`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Customer Service & Reports|Customer Service & Reports]]
@@ -89,51 +95,75 @@
 - [[_COMMUNITY_Response Helper|Response Helper]]
 - [[_COMMUNITY_Cron Config|Cron Config]]
 - [[_COMMUNITY_Go Module Manifest|Go Module Manifest]]
+- [[_COMMUNITY_Community 87|Community 87]]
+- [[_COMMUNITY_Community 88|Community 88]]
+- [[_COMMUNITY_Community 89|Community 89]]
+- [[_COMMUNITY_Community 90|Community 90]]
+- [[_COMMUNITY_Community 91|Community 91]]
+- [[_COMMUNITY_Community 92|Community 92]]
+- [[_COMMUNITY_Community 93|Community 93]]
+- [[_COMMUNITY_Community 94|Community 94]]
+- [[_COMMUNITY_Community 96|Community 96]]
+- [[_COMMUNITY_Community 97|Community 97]]
+- [[_COMMUNITY_Community 99|Community 99]]
+- [[_COMMUNITY_Community 103|Community 103]]
+- [[_COMMUNITY_Community 104|Community 104]]
+- [[_COMMUNITY_Community 105|Community 105]]
+- [[_COMMUNITY_Community 106|Community 106]]
+- [[_COMMUNITY_Community 107|Community 107]]
+- [[_COMMUNITY_Community 108|Community 108]]
+- [[_COMMUNITY_Community 109|Community 109]]
+- [[_COMMUNITY_Community 110|Community 110]]
+- [[_COMMUNITY_Community 112|Community 112]]
+- [[_COMMUNITY_Community 113|Community 113]]
+- [[_COMMUNITY_Community 114|Community 114]]
+- [[_COMMUNITY_Community 115|Community 115]]
+- [[_COMMUNITY_Community 116|Community 116]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `Service` - 30 edges
-2. `GetOrganization()` - 27 edges
-3. `Context` - 25 edges
-4. `Repository` - 23 edges
-5. `GetUserCredential()` - 23 edges
+1. `GetOrganization()` - 38 edges
+2. `Service` - 30 edges
+3. `GetUserCredential()` - 26 edges
+4. `Context` - 25 edges
+5. `Repository` - 23 edges
 6. `Service` - 22 edges
-7. `Context` - 19 edges
-8. `Context` - 18 edges
-9. `Repository` - 16 edges
-10. `NewTable()` - 15 edges
+7. `NewTable()` - 22 edges
+8. `Context` - 19 edges
+9. `Context` - 18 edges
+10. `InitRouter()` - 17 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Protected()` --calls--> `GetConfig()`  [INFERRED]
-  pkg/infrastructure/middleware/auth.go → config/loader.go
 - `Connect()` --calls--> `GetConfig()`  [INFERRED]
   cmd/db/migrate/db_migrate.go → config/loader.go
 - `Connect()` --calls--> `GetDatabaseDriverMigration()`  [INFERRED]
   cmd/db/migrate/db_migrate.go → pkg/infrastructure/database/sql_connection.go
 - `MigrateUpAll()` --calls--> `GetConfig()`  [INFERRED]
   cmd/db/migrate/db_migrate.go → config/loader.go
-- `startRest()` --calls--> `GetConfig()`  [INFERRED]
-  cmd/server/rest.go → config/loader.go
+- `NewClient()` --calls--> `GetConfig()`  [INFERRED]
+  pkg/infrastructure/brevo/client.go → config/loader.go
+- `Protected()` --calls--> `GetConfig()`  [INFERRED]
+  pkg/infrastructure/middleware/auth.go → config/loader.go
 
 ## Import Cycles
 - None detected.
 
-## Communities (87 total, 8 thin omitted)
+## Communities (112 total, 10 thin omitted)
 
 ### Community 0 - "Customer Service & Reports"
 Cohesion: 0.07
 Nodes (33): GenerateOJKCompanyReportExcel(), GenerateOJKCustomerReportExcel(), GetCompanyParticipantReport(), FindAllCompanyUserLog(), GetCompanyID(), GetOrigin(), GetOriginTypeKey(), NewBackgroundContext() (+25 more)
 
 ### Community 1 - "Bootstrap & Config Loader"
-Cohesion: 0.05
-Nodes (45): APIClient, NewS3Config(), S3Config, AwsConfig, NewClient(), Client, Command, Config (+37 more)
+Cohesion: 0.36
+Nodes (10): connect(), GetDatabaseDriverMigration(), getGormDialect(), getSqlDB(), NewSQLConnection(), SQLConnection, Dialector, Driver (+2 more)
 
 ### Community 2 - "Admin Module Handlers"
-Cohesion: 0.07
-Nodes (41): AdminGetMyProfile(), CreateAdminCompany(), FindAllAdmin(), FindAllAdminByCompanyID(), UpdateAdminName(), UpdateAdminProfileImage(), GetUserCredential(), CustomerGetMyProfile() (+33 more)
+Cohesion: 0.10
+Nodes (44): FindAllCompanies(), CreateItemCategory(), DeleteItemCategory(), FindAllItemCategories(), FindOneItemCategory(), UpdateItemCategory(), CreateItem(), DeleteItem() (+36 more)
 
 ### Community 3 - "Customer & UserLog Repositories"
-Cohesion: 0.10
-Nodes (23): GetOrganization(), Repository, NewRepository(), Context, CustomerCount, CustomerDto, CustomerFindAllRequest, DB (+15 more)
+Cohesion: 0.06
+Nodes (38): GetOrganization(), Repository, NewRepository(), Service, NewService(), Service, NewService(), Context (+30 more)
 
 ### Community 4 - "UnitLink Portfolio Repository"
 Cohesion: 0.12
@@ -152,16 +182,16 @@ Cohesion: 0.14
 Nodes (25): FindAllCompanyCustomer(), FindCompanyCustomerByID(), CompanyCustomerRouter(), ChangePassword(), CreateCustomer(), customerAttachment(), DeleteCustomer(), FindAllByCompany() (+17 more)
 
 ### Community 8 - "Admin Repository & Pagination"
-Cohesion: 0.17
-Nodes (20): Repository, NewRepository(), Table, calculateTotalPages(), getMappingField(), getOperator(), NewTable(), sortValidation() (+12 more)
+Cohesion: 0.12
+Nodes (26): Repository, NewRepository(), Service, NewService(), DriverFindAllRequest, Table, calculateTotalPages(), getMappingField() (+18 more)
 
 ### Community 9 - "Response & Error Middleware"
 Cohesion: 0.12
 Nodes (21): Error, DefaultErrorHandler(), DefaultResponseHandler(), Ctx, AppStatus, Time, ErrorResponse, Response (+13 more)
 
 ### Community 10 - "Item Repository & Entity"
-Cohesion: 0.14
-Nodes (14): NewItemDtoFromModel(), ItemDto, ItemFindAllRequest, Repository, NewRepository(), CompanyDto, FindAllRequest, Item (+6 more)
+Cohesion: 0.06
+Nodes (32): NewItemCategoryDtoFromModel(), NewItemDtoFromModel(), ItemCategoryDto, ItemCategoryFindAllRequest, ItemDto, ItemFindAllRequest, Repository, NewRepository() (+24 more)
 
 ### Community 11 - "User Entity & DTOs"
 Cohesion: 0.16
@@ -212,16 +242,16 @@ Cohesion: 0.35
 Nodes (11): companyAttachment(), CompanyGetMyProfile(), CreateCompany(), DeleteCompany(), FindAllCompany(), FindCompanyByID(), UpdateCompany(), CompanyDto (+3 more)
 
 ### Community 23 - "Company Repository & Entity"
-Cohesion: 0.26
-Nodes (9): Repository, NewRepository(), NewCompanyDtoFromModel(), CompanyDto, Company, OrganizationDto, CompanyDto, Context (+1 more)
+Cohesion: 0.16
+Nodes (13): Repository, NewRepository(), NewCompanyDtoFromModel(), CompanyDto, CompanyFindAllRequest, Company, FindAllRequest, OrganizationDto (+5 more)
 
 ### Community 24 - "User Repository"
 Cohesion: 0.27
 Nodes (7): CreateUser, Context, DB, IdentityStatus, UserDto, Repository, NewRepository()
 
 ### Community 25 - "Item Service"
-Cohesion: 0.29
-Nodes (7): Service, NewService(), Context, ItemDto, ItemFindAllRequest, Repository, ResultPagination
+Cohesion: 0.05
+Nodes (45): CashAdjustmentDto, EmployeeReportRowDto, CashAdjustmentDto, CashAdjustmentInputDto, CloseStockSessionInputDto, CloseStockSessionItemInputDto, DailyReportDto, DashboardSummaryDto (+37 more)
 
 ### Community 26 - "Portfolio Repository"
 Cohesion: 0.29
@@ -233,7 +263,7 @@ Nodes (7): Context, DB, FindAllRequest, ResultPagination, RoleDto, Repository, N
 
 ### Community 28 - "Role Service"
 Cohesion: 0.29
-Nodes (7): Context, FindAllRequest, Repository, ResultPagination, RoleDto, Service, NewService()
+Nodes (7): Context, Repository, ResultPagination, UserLogDto, UserLogFindAllRequest, Service, NewService()
 
 ### Community 30 - "AWS S3 Service"
 Cohesion: 0.29
@@ -264,8 +294,8 @@ Cohesion: 0.31
 Nodes (7): UploadCustomer(), AdminUploadRouter(), CompanyUploadRouter(), Handler, Service, Router, Service
 
 ### Community 37 - "Admin Entity"
-Cohesion: 0.33
-Nodes (4): AdminDto, CreateAdminCompany, Admin, UserDto
+Cohesion: 0.25
+Nodes (6): AdminDto, CreateAdminCompany, DriverFindAllRequest, Admin, GetListRequest, UserDto
 
 ### Community 38 - "User Identity Verification Repo"
 Cohesion: 0.44
@@ -296,8 +326,8 @@ Cohesion: 0.43
 Nodes (7): AppStatus, ClientErrorCase, ServerErrorCase, NewClientErrorAppStatus(), NewServerErrorAppStatus(), NewSuccessAppStatus(), SuccessCase
 
 ### Community 45 - "Company Service"
-Cohesion: 0.48
-Nodes (5): Service, NewService(), CompanyDto, Context, Repository
+Cohesion: 0.31
+Nodes (7): Service, NewService(), CompanyDto, CompanyFindAllRequest, Context, Repository, ResultPagination
 
 ### Community 46 - "Order Item Repository"
 Cohesion: 0.38
@@ -368,8 +398,8 @@ Cohesion: 0.50
 Nodes (3): FindAllRequest, GetListRequest, OrganizationData
 
 ### Community 63 - "Item Model"
-Cohesion: 0.67
-Nodes (4): ItemCompany, Item, CommonWithIDs, Organization
+Cohesion: 0.47
+Nodes (6): ItemCompany, Item, ItemCategory, CommonWithIDs, ItemCategory, Organization
 
 ### Community 65 - "Admin Model"
 Cohesion: 0.67
@@ -407,25 +437,113 @@ Nodes (3): Company, CommonWithIDs, Organization
 Cohesion: 1.00
 Nodes (3): Permission, CommonWithIDs, RolePermission
 
+### Community 87 - "Community 87"
+Cohesion: 0.12
+Nodes (21): EmployeeSalary, EmployeeSalaryComponent, NewEmployeeSalaryComponentDtoFromModel(), NewEmployeeSalaryDtoFromModel(), EmployeeSalaryComponentDto, EmployeeSalaryDto, EmployeeSalaryFindAllRequest, SavePayrollRequest (+13 more)
+
+### Community 88 - "Community 88"
+Cohesion: 0.16
+Nodes (12): NewSalaryComponentDtoFromModel(), SalaryComponentDto, SalaryComponentFindAllRequest, FindAllRequest, Context, DB, ResultPagination, SalaryComponentDto (+4 more)
+
+### Community 89 - "Community 89"
+Cohesion: 0.34
+Nodes (8): Context, DB, Repository, ResultPagination, Service, StockSessionDto, StockSessionFindAllRequest, NewService()
+
+### Community 90 - "Community 90"
+Cohesion: 0.21
+Nodes (10): Service, NewService(), Context, EmployeeSalaryDto, EmployeeSalaryFindAllRequest, Repository, ResultPagination, SimulatePayrollResultDto (+2 more)
+
+### Community 91 - "Community 91"
+Cohesion: 0.36
+Nodes (6): ChangePasswordDto, Context, DB, UserCredentialDto, Repository, NewRepository()
+
+### Community 92 - "Community 92"
+Cohesion: 0.23
+Nodes (7): DailyReportDto, DashboardSummaryDto, EmployeePerformanceRowDto, MonthlyReportDto, Context, service, TopProductRowDto
+
+### Community 93 - "Community 93"
+Cohesion: 0.08
+Nodes (46): AdminGetMyProfile(), CreateAdminCompany(), FindAllAdmin(), FindAllAdminByCompanyID(), UpdateAdminName(), UpdateAdminProfileImage(), GetUserCredential(), CustomerGetMyProfile() (+38 more)
+
+### Community 94 - "Community 94"
+Cohesion: 0.18
+Nodes (9): AwsConfig, Config, Cron, DatabaseList, LoggerConfig, MailConfig, RoleConfig, ServerList (+1 more)
+
+### Community 96 - "Community 96"
+Cohesion: 0.42
+Nodes (7): Command, GetConfig(), Rest, initDatabase(), NewRest(), startRest(), startRestProduction()
+
+### Community 97 - "Community 97"
+Cohesion: 0.22
+Nodes (8): StockSession, Admin, CashAdjustment, CommonWithIDs, PaymentDetail, SessionLog, StockSessionItem, Time
+
+### Community 99 - "Community 99"
+Cohesion: 0.57
+Nodes (6): Migrate, Connect(), MigrateUpAll(), Migration(), migrationDown(), migrationUp()
+
+### Community 103 - "Community 103"
+Cohesion: 0.40
+Nodes (5): jwtError(), Protected(), SuccessHandler(), Ctx, Handler
+
+### Community 104 - "Community 104"
+Cohesion: 0.33
+Nodes (4): ErrorResponse, SetupValidator(), XValidator, Validate
+
+### Community 105 - "Community 105"
+Cohesion: 0.40
+Nodes (5): EmployeeSalary, EmployeeSalaryComponent, Admin, CommonWithIDs, Time
+
+### Community 106 - "Community 106"
+Cohesion: 0.40
+Nodes (4): Context, LoginDto, UserCredentialData, Service
+
+### Community 107 - "Community 107"
+Cohesion: 0.50
+Nodes (3): NewS3Config(), S3Config, Client
+
+### Community 108 - "Community 108"
+Cohesion: 0.40
+Nodes (4): SessionLog, CommonWithIDs, StockSession, Time
+
+### Community 109 - "Community 109"
+Cohesion: 0.40
+Nodes (4): StockSessionItem, CommonWithIDs, Item, StockSession
+
+### Community 110 - "Community 110"
+Cohesion: 0.50
+Nodes (3): FindAllDrivers(), Handler, Service
+
+### Community 112 - "Community 112"
+Cohesion: 0.50
+Nodes (3): CashAdjustment, CommonWithIDs, StockSession
+
+### Community 113 - "Community 113"
+Cohesion: 0.50
+Nodes (3): PaymentDetail, CommonWithIDs, StockSession
+
+### Community 114 - "Community 114"
+Cohesion: 0.50
+Nodes (3): SalaryComponent, CommonWithIDs, Company
+
 ## Knowledge Gaps
-- **217 isolated node(s):** `AwsConfig`, `Database`, `ServerList`, `DatabaseList`, `LoggerConfig` (+212 more)
+- **292 isolated node(s):** `AwsConfig`, `Database`, `ServerList`, `DatabaseList`, `LoggerConfig` (+287 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `GetOrganization()` connect `Customer & UserLog Repositories` to `Customer Service & Reports`, `User Identity Verification Repo`, `Bank Customer Service & Routes`, `Admin Service`, `Order Service`, `Item Service`, `Role Service`?**
-  _High betweenness centrality (0.242) - this node is a cross-community bridge._
-- **Why does `NewTable()` connect `Admin Repository & Pagination` to `Customer & UserLog Repositories`, `UnitLink Portfolio Repository`, `Order Entity & Repository`, `Item Repository & Entity`, `Customer Point Repository`, `Participant Repository`, `Bank Customer Repository`, `User Log Repository`, `Portfolio Repository`, `Role Repository`?**
-  _High betweenness centrality (0.206) - this node is a cross-community bridge._
-- **Why does `GetUserCredential()` connect `Admin Module Handlers` to `Customer Service & Reports`, `Bank Customer Service & Routes`, `Company Handlers`, `Customer Handlers & Routes`?**
-  _High betweenness centrality (0.182) - this node is a cross-community bridge._
-- **Are the 24 inferred relationships involving `GetOrganization()` (e.g. with `.CreateAdminCompany()` and `.Create()`) actually correct?**
-  _`GetOrganization()` has 24 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 20 inferred relationships involving `GetUserCredential()` (e.g. with `AdminGetMyProfile()` and `UpdateAdminName()`) actually correct?**
-  _`GetUserCredential()` has 20 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `NewTable()` connect `Admin Repository & Pagination` to `Customer & UserLog Repositories`, `UnitLink Portfolio Repository`, `Order Entity & Repository`, `Item Repository & Entity`, `Customer Point Repository`, `Participant Repository`, `Bank Customer Repository`, `User Log Repository`, `Community 87`, `Company Repository & Entity`, `Community 88`, `Item Service`, `Portfolio Repository`, `Role Repository`?**
+  _High betweenness centrality (0.212) - this node is a cross-community bridge._
+- **Why does `GetOrganization()` connect `Customer & UserLog Repositories` to `Customer Service & Reports`, `User Identity Verification Repo`, `Company Service`, `Bank Customer Service & Routes`, `Admin Service`, `Order Service`, `Community 89`, `Community 90`, `Community 91`, `Role Service`?**
+  _High betweenness centrality (0.165) - this node is a cross-community bridge._
+- **Why does `GetUserCredential()` connect `Community 93` to `Customer Service & Reports`, `Admin Module Handlers`, `Customer Handlers & Routes`, `Bank Customer Service & Routes`, `Company Handlers`?**
+  _High betweenness centrality (0.094) - this node is a cross-community bridge._
+- **Are the 35 inferred relationships involving `GetOrganization()` (e.g. with `.CreateAdminCompany()` and `.Create()`) actually correct?**
+  _`GetOrganization()` has 35 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 23 inferred relationships involving `GetUserCredential()` (e.g. with `AdminGetMyProfile()` and `UpdateAdminName()`) actually correct?**
+  _`GetUserCredential()` has 23 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `AwsConfig`, `Database`, `ServerList` to the rest of the system?**
-  _217 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _292 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Customer Service & Reports` be split into smaller, more focused modules?**
   _Cohesion score 0.07033315705975675 - nodes in this community are weakly interconnected._

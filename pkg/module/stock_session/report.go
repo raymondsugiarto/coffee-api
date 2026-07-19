@@ -85,6 +85,10 @@ func (s *service) GetDailyReport(ctx context.Context, date string) (*entity.Dail
 		report.TotalOther += ss.TotalOther
 		report.TotalPayment += ss.TotalPayment
 		report.TotalDiff += ss.Difference
+		report.TotalCommission += ss.TotalCommission
+		report.TotalMealAllowance += ss.MealAllowance
+		report.TotalBonusTarget += ss.BonusTarget
+		report.TotalSalary += ss.TotalSalary
 
 		row, ok := byEmployee[ss.EmployeeID]
 		if !ok {
@@ -96,6 +100,10 @@ func (s *service) GetDailyReport(ctx context.Context, date string) (*entity.Dail
 		row.TotalCash += ss.TotalCash
 		row.TotalQris += ss.TotalQris
 		row.Difference += ss.Difference
+		row.Commission += ss.TotalCommission
+		row.MealAllowance += ss.MealAllowance
+		row.BonusTarget += ss.BonusTarget
+		row.TotalSalary += ss.TotalSalary
 	}
 
 	// Hydrate employee names
@@ -145,6 +153,10 @@ func (s *service) GetMonthlyReport(ctx context.Context, year, month int) (*entit
 		report.TotalCash += ss.TotalCash
 		report.TotalQris += ss.TotalQris
 		report.TotalDiff += ss.Difference
+		report.TotalCommission += ss.TotalCommission
+		report.TotalMealAllowance += ss.MealAllowance
+		report.TotalBonusTarget += ss.BonusTarget
+		report.TotalSalary += ss.TotalSalary
 
 		daily, ok := byDate[dateKey]
 		if !ok {
@@ -156,6 +168,10 @@ func (s *service) GetMonthlyReport(ctx context.Context, year, month int) (*entit
 		daily.TotalCash += ss.TotalCash
 		daily.TotalQris += ss.TotalQris
 		daily.TotalDiff += ss.Difference
+		daily.TotalCommission += ss.TotalCommission
+		daily.TotalMealAllowance += ss.MealAllowance
+		daily.TotalBonusTarget += ss.BonusTarget
+		daily.TotalSalary += ss.TotalSalary
 
 		row, ok := byEmployee[ss.EmployeeID]
 		if !ok {
@@ -167,6 +183,10 @@ func (s *service) GetMonthlyReport(ctx context.Context, year, month int) (*entit
 		row.TotalCash += ss.TotalCash
 		row.TotalQris += ss.TotalQris
 		row.Difference += ss.Difference
+		row.Commission += ss.TotalCommission
+		row.MealAllowance += ss.MealAllowance
+		row.BonusTarget += ss.BonusTarget
+		row.TotalSalary += ss.TotalSalary
 	}
 
 	if len(byDate) > 0 {
@@ -247,15 +267,19 @@ func (s *service) GetEmployeePerformance(ctx context.Context, from, to string) (
 		to = time.Now().Format("2006-01-02")
 	}
 	type rawRow struct {
-		EmployeeID string
-		FirstName  string
-		LastName   string
-		Sessions   int64
-		TotalItems int64
-		TotalSales float64
-		TotalCash  float64
-		TotalQris  float64
-		TotalDiff  float64
+		EmployeeID    string
+		FirstName     string
+		LastName      string
+		Sessions      int64
+		TotalItems    int64
+		TotalSales    float64
+		TotalCash     float64
+		TotalQris     float64
+		TotalDiff     float64
+		Commission    float64
+		MealAllowance float64
+		BonusTarget   float64
+		TotalSalary   float64
 	}
 	var rows []rawRow
 	err := s.db.
@@ -268,7 +292,11 @@ func (s *service) GetEmployeePerformance(ctx context.Context, from, to string) (
 		        COALESCE(SUM(ss.total_sales), 0) as total_sales,
 		        COALESCE(SUM(ss.total_cash), 0) as total_cash,
 		        COALESCE(SUM(ss.total_qris), 0) as total_qris,
-		        COALESCE(SUM(ss.difference), 0) as total_diff`).
+		        COALESCE(SUM(ss.difference), 0) as total_diff,
+		        COALESCE(SUM(ss.total_commission), 0) as commission,
+		        COALESCE(SUM(ss.meal_allowance), 0) as meal_allowance,
+		        COALESCE(SUM(ss.bonus_target), 0) as bonus_target,
+		        COALESCE(SUM(ss.total_salary), 0) as total_salary`).
 		Joins("LEFT JOIN admin a ON a.id = ss.employee_id").
 		Where("ss.date >= ? AND ss.date <= ?", from, to).
 		Group("ss.employee_id, a.first_name, a.last_name").
@@ -280,14 +308,18 @@ func (s *service) GetEmployeePerformance(ctx context.Context, from, to string) (
 	out := make([]entity.EmployeePerformanceRowDto, 0, len(rows))
 	for _, r := range rows {
 		out = append(out, entity.EmployeePerformanceRowDto{
-			EmployeeID:   r.EmployeeID,
-			EmployeeName: (r.FirstName + " " + r.LastName),
-			Sessions:     int(r.Sessions),
-			TotalItems:   int(r.TotalItems),
-			TotalSales:   r.TotalSales,
-			TotalCash:    r.TotalCash,
-			TotalQris:    r.TotalQris,
-			TotalDiff:    r.TotalDiff,
+			EmployeeID:    r.EmployeeID,
+			EmployeeName:  (r.FirstName + " " + r.LastName),
+			Sessions:      int(r.Sessions),
+			TotalItems:    int(r.TotalItems),
+			TotalSales:    r.TotalSales,
+			TotalCash:     r.TotalCash,
+			TotalQris:     r.TotalQris,
+			TotalDiff:     r.TotalDiff,
+			Commission:    r.Commission,
+			MealAllowance: r.MealAllowance,
+			BonusTarget:   r.BonusTarget,
+			TotalSalary:   r.TotalSalary,
 		})
 	}
 	return out, nil

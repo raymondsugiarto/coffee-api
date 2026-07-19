@@ -150,9 +150,9 @@
     "semantic_hash": "e84dd561964ab926ea673d184fa017b8"
   },
   "pkg/adapter/handlers/item_handler.go": {
-    "mtime": 1763918302.2840657,
-    "ast_hash": "775cb19fc10f375126e8368f87e6efe0",
-    "semantic_hash": "775cb19fc10f375126e8368f87e6efe0"
+    "mtime": 1784132541.103615,
+    "ast_hash": "965bf7bfee88266f098736f166c55927",
+    "semantic_hash": ""
   },
   "pkg/adapter/handlers/order_handler.go": {
     "mtime": 1764083859.630921,
@@ -200,9 +200,9 @@
     "semantic_hash": "92c644bfe889502fca5e9e9ab51ecebb"
   },
   "pkg/adapter/routes/router.go": {
-    "mtime": 1764521974.2541242,
-    "ast_hash": "e4697ef719c5d3ed813c3d5e9747016d",
-    "semantic_hash": "e4697ef719c5d3ed813c3d5e9747016d"
+    "mtime": 1784330029.9017668,
+    "ast_hash": "9c0ced94b14358f6ef7a85038d23b0d6",
+    "semantic_hash": ""
   },
   "pkg/adapter/routes/storage_router.go": {
     "mtime": 1760759698.7772784,
@@ -210,9 +210,9 @@
     "semantic_hash": "493b0c2dac905f8ab71c401f31ff6c2b"
   },
   "pkg/entity/admin.go": {
-    "mtime": 1760759699.0112164,
-    "ast_hash": "01c9e30799279d66afb981bca908f35c",
-    "semantic_hash": "01c9e30799279d66afb981bca908f35c"
+    "mtime": 1783182370.5480037,
+    "ast_hash": "38898c334d18c7e7109d09555e348ba1",
+    "semantic_hash": ""
   },
   "pkg/entity/authentication/sign_in.go": {
     "mtime": 1763875213.9762244,
@@ -220,14 +220,14 @@
     "semantic_hash": "5121d07d2ecca398d234eb1d525af0d2"
   },
   "pkg/entity/company.go": {
-    "mtime": 1763917648.7066224,
-    "ast_hash": "6a80bf3cc1849af44fc6f91394805e14",
-    "semantic_hash": "6a80bf3cc1849af44fc6f91394805e14"
+    "mtime": 1784245919.7411435,
+    "ast_hash": "6b43cd9e4b793af5f086f106b8156608",
+    "semantic_hash": ""
   },
   "pkg/entity/item.go": {
-    "mtime": 1763917686.7688947,
-    "ast_hash": "5165dd48e3a778eca715ef63460f94fd",
-    "semantic_hash": "5165dd48e3a778eca715ef63460f94fd"
+    "mtime": 1784133748.6043243,
+    "ast_hash": "d73405c2bbe1e2f606378cf65aea4a2b",
+    "semantic_hash": ""
   },
   "pkg/entity/order.go": {
     "mtime": 1764523820.5657935,
@@ -335,9 +335,9 @@
     "semantic_hash": "61199bc5266b3d9bfbef279f8c1a8a76"
   },
   "pkg/model/item.go": {
-    "mtime": 1763916197.503827,
-    "ast_hash": "2d96c547dc22911f5a1160e0849d2ca2",
-    "semantic_hash": "2d96c547dc22911f5a1160e0849d2ca2"
+    "mtime": 1784133748.6042166,
+    "ast_hash": "5f06e5c1b38682278df66baabb640b26",
+    "semantic_hash": ""
   },
   "pkg/model/item_company.go": {
     "mtime": 1763916166.2913208,
@@ -405,9 +405,9 @@
     "semantic_hash": "8088e22eb9a2979d072d4b771dabe7bb"
   },
   "pkg/module/authentication/service.go": {
-    "mtime": 1765091739.63479,
-    "ast_hash": "bbd4660c507d28aa3d79000f89f2bd4c",
-    "semantic_hash": "bbd4660c507d28aa3d79000f89f2bd4c"
+    "mtime": 1783186380.4244475,
+    "ast_hash": "7df0314dfae22319395d5c037bdf3191",
+    "semantic_hash": ""
   },
   "pkg/module/authentication/token/service.go": {
     "mtime": 1763919926.988972,
@@ -415,14 +415,14 @@
     "semantic_hash": "0b52126508d8446bf3221b221f5e1c0c"
   },
   "pkg/module/company/repository.go": {
-    "mtime": 1763998179.0910594,
-    "ast_hash": "ebfbccb76570a1c0a41a72708028632d",
-    "semantic_hash": "ebfbccb76570a1c0a41a72708028632d"
+    "mtime": 1784245445.9411561,
+    "ast_hash": "107c617c19f0bc283221c2d07262dae6",
+    "semantic_hash": ""
   },
   "pkg/module/company/service.go": {
-    "mtime": 1763998364.3594823,
-    "ast_hash": "77f4bad427aa9568373da5f63d73deba",
-    "semantic_hash": "77f4bad427aa9568373da5f63d73deba"
+    "mtime": 1784245445.9411352,
+    "ast_hash": "80426ba7bc9876fab1b39f3fd3744350",
+    "semantic_hash": ""
   },
   "pkg/module/customer/bank_customer/repository.go": {
     "mtime": 1760759698.530904,
@@ -485,14 +485,14 @@
     "semantic_hash": "9d96a70821589ea3f5dc395b102f9356"
   },
   "pkg/module/item/repository.go": {
-    "mtime": 1763918407.903597,
-    "ast_hash": "0763868a7ea866adde56498eefef960d",
-    "semantic_hash": "0763868a7ea866adde56498eefef960d"
+    "mtime": 1784132540.7263734,
+    "ast_hash": "7925750a2a6579075e57d9099a82ebf1",
+    "semantic_hash": ""
   },
   "pkg/module/item/service.go": {
-    "mtime": 1763917767.4152772,
-    "ast_hash": "88ca477fcaa5007294a3aa669e3801c8",
-    "semantic_hash": "88ca477fcaa5007294a3aa669e3801c8"
+    "mtime": 1784132541.1042187,
+    "ast_hash": "60325983b80d6a8ce88f9c4a98157548",
+    "semantic_hash": ""
   },
   "pkg/module/order/order_item/repository.go": {
     "mtime": 1764524490.3684685,
@@ -663,5 +663,245 @@
     "mtime": 1760758228.508599,
     "ast_hash": "40f0af1de1bd64a87b29688d50e0e745",
     "semantic_hash": "40f0af1de1bd64a87b29688d50e0e745"
+  },
+  "pkg/module/payroll/repository.go": {
+    "mtime": 1784334154.857191,
+    "ast_hash": "b3274feb44e84b7d23ac57cca8f8cd26",
+    "semantic_hash": ""
+  },
+  "pkg/module/payroll/service.go": {
+    "mtime": 1784330029.9018722,
+    "ast_hash": "85eeee7f42b3b0ae9b8db965f31259f1",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000003_stock_session.down.sql": {
+    "mtime": 1783184897.859786,
+    "ast_hash": "d47f1fde49743201b5533cb2eef0922b",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000003_stock_session.up.sql": {
+    "mtime": 1783184896.364691,
+    "ast_hash": "959cb46d047e72405e4593102e0c8b86",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000004_item_parent.down.sql": {
+    "mtime": 1783986896.2638128,
+    "ast_hash": "bfaaaea27e877d34c413de746c91264f",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000004_item_parent.up.sql": {
+    "mtime": 1783986896.2586844,
+    "ast_hash": "fb0b3da12c756a3f621a783756645104",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000004_item_parent_seed_example.sql": {
+    "mtime": 1783987671.0424032,
+    "ast_hash": "c29c20e8fdebf0c134f209873854e484",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000005_item_commision.down.sql": {
+    "mtime": 1784133748.5909011,
+    "ast_hash": "c16bcd1e154160f4fa1bdb6c1e4ebe0d",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000005_item_commision.up.sql": {
+    "mtime": 1784133748.5908577,
+    "ast_hash": "6627ecbf990832bce7ea57276b9be4a8",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000006_salary_component.down.sql": {
+    "mtime": 1784134420.828255,
+    "ast_hash": "3499863719413df6caa2ce7d619c4690",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000006_salary_component.up.sql": {
+    "mtime": 1784134420.828115,
+    "ast_hash": "e94179d8a5427a8875fafeb4d0417e37",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000007_stock_session_commission.down.sql": {
+    "mtime": 1784161335.1818216,
+    "ast_hash": "b99a21aeea35cfa9bd1046f046518f15",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000007_stock_session_commission.up.sql": {
+    "mtime": 1784161335.1818202,
+    "ast_hash": "2fec74f09fa534d9927d18dcd9b947e0",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000008_stock_session_salary.down.sql": {
+    "mtime": 1784161818.7196705,
+    "ast_hash": "4dbdff8589407b9cf827b6a4e637486b",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000008_stock_session_salary.up.sql": {
+    "mtime": 1784161818.7208169,
+    "ast_hash": "16af0f1aebc656f42b31a4910673d233",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000009_employee_salary.down.sql": {
+    "mtime": 1784330029.6304603,
+    "ast_hash": "26bc5f2c08890349006217ce0610d773",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000009_employee_salary.up.sql": {
+    "mtime": 1784330029.6304617,
+    "ast_hash": "1db9eed15cc28dc9d73e7505dcb90319",
+    "semantic_hash": ""
+  },
+  "db/sql/fix_parent_id_for_active_session.sql": {
+    "mtime": 1783987923.5186627,
+    "ast_hash": "b6dce77a4d7ff81f8f57a5d03044bdff",
+    "semantic_hash": ""
+  },
+  "pkg/adapter/handlers/company_handler.go": {
+    "mtime": 1784245445.9609883,
+    "ast_hash": "277e8e7dcfbef2629438738b58789167",
+    "semantic_hash": ""
+  },
+  "pkg/adapter/handlers/driver_handler.go": {
+    "mtime": 1783185062.3879,
+    "ast_hash": "6986e54f6993217d1c9dc2d214519cc6",
+    "semantic_hash": ""
+  },
+  "pkg/adapter/handlers/item_category_handler.go": {
+    "mtime": 1784127444.2476327,
+    "ast_hash": "32ed1ef04a989f86684dbfc04c4ff338",
+    "semantic_hash": ""
+  },
+  "pkg/adapter/handlers/payroll_handler.go": {
+    "mtime": 1784330029.9018404,
+    "ast_hash": "49d003f6a4747495bf92639af6b9938a",
+    "semantic_hash": ""
+  },
+  "pkg/adapter/handlers/salary_component_handler.go": {
+    "mtime": 1784134420.8793662,
+    "ast_hash": "32dd05b01c98c28ed6158b5fc4b1d26b",
+    "semantic_hash": ""
+  },
+  "pkg/adapter/handlers/stock_session_handler.go": {
+    "mtime": 1784343838.4328744,
+    "ast_hash": "e47ef0740e850c2812fdd8e1ad40cbf8",
+    "semantic_hash": ""
+  },
+  "pkg/entity/employee_salary.go": {
+    "mtime": 1784330029.9017794,
+    "ast_hash": "5a11df6442f9a6c344a014b1e6eb9387",
+    "semantic_hash": ""
+  },
+  "pkg/entity/salary_component.go": {
+    "mtime": 1784134420.879337,
+    "ast_hash": "f8f23a5346992586c7b267c672b537d1",
+    "semantic_hash": ""
+  },
+  "pkg/entity/stock_session.go": {
+    "mtime": 1784343838.4334116,
+    "ast_hash": "d59b7318a9ad54ff9ecec2708b73360e",
+    "semantic_hash": ""
+  },
+  "pkg/model/admin_company.go": {
+    "mtime": 1784161974.3981202,
+    "ast_hash": "1f11948463acca203ce907c5b87c2b50",
+    "semantic_hash": ""
+  },
+  "pkg/model/cash_adjustment.go": {
+    "mtime": 1783182370.484468,
+    "ast_hash": "f5e1bf2ba47defed254cb4764d43503a",
+    "semantic_hash": ""
+  },
+  "pkg/model/employee_salary.go": {
+    "mtime": 1784330029.9017696,
+    "ast_hash": "98b3d45946d356a33d817416fb763a2e",
+    "semantic_hash": ""
+  },
+  "pkg/model/payment_detail.go": {
+    "mtime": 1783182370.484403,
+    "ast_hash": "2f8af55f1beec69283feb42f43048044",
+    "semantic_hash": ""
+  },
+  "pkg/model/salary_component.go": {
+    "mtime": 1784134420.8792791,
+    "ast_hash": "da33ee47831dcf2fdf2d51dbdefa06cc",
+    "semantic_hash": ""
+  },
+  "pkg/model/session_log.go": {
+    "mtime": 1783182376.307599,
+    "ast_hash": "2f59a9c354eddd5be8a555aff7320f46",
+    "semantic_hash": ""
+  },
+  "pkg/model/stock_session.go": {
+    "mtime": 1784343838.4754584,
+    "ast_hash": "0adfb60f6a57e5d1de11e0cff81d09a1",
+    "semantic_hash": ""
+  },
+  "pkg/model/stock_session_item.go": {
+    "mtime": 1784161335.269489,
+    "ast_hash": "f62676f4672f8c88e9164588fef96219",
+    "semantic_hash": ""
+  },
+  "pkg/module/driver/service.go": {
+    "mtime": 1783182382.6115284,
+    "ast_hash": "72b186cd6e31a424f7a29da3bf0af3fb",
+    "semantic_hash": ""
+  },
+  "pkg/module/item_category/repository.go": {
+    "mtime": 1784132540.7116213,
+    "ast_hash": "1db0e7e16a1d0c1440a9b474a7a4b891",
+    "semantic_hash": ""
+  },
+  "pkg/module/item_category/service.go": {
+    "mtime": 1784132540.716184,
+    "ast_hash": "4152c00e3b75dc1b25f841bbb9b9aade",
+    "semantic_hash": ""
+  },
+  "pkg/module/salary_component/repository.go": {
+    "mtime": 1784134420.895911,
+    "ast_hash": "bf6db222f7977b091a79572b942e9acd",
+    "semantic_hash": ""
+  },
+  "pkg/module/salary_component/service.go": {
+    "mtime": 1784134420.8793805,
+    "ast_hash": "d26523f4b0aa5812c1c3998c8f8096ee",
+    "semantic_hash": ""
+  },
+  "pkg/module/stock_session/item_service.go": {
+    "mtime": 1783987923.5307186,
+    "ast_hash": "7b470a2f76ac05b289d1b742c487c6bd",
+    "semantic_hash": ""
+  },
+  "pkg/module/stock_session/report.go": {
+    "mtime": 1784247165.4190536,
+    "ast_hash": "6a144bdf6189377cc046ba2a6660e6ca",
+    "semantic_hash": ""
+  },
+  "pkg/module/stock_session/repository.go": {
+    "mtime": 1784343838.4745154,
+    "ast_hash": "cb449044e1b398dfce2f8de8fb65156f",
+    "semantic_hash": ""
+  },
+  "pkg/module/stock_session/service.go": {
+    "mtime": 1784297376.4235566,
+    "ast_hash": "2bb16127cb48f36e863ec93cdabd18cd",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000010_fix_salary_seeds.down.sql": {
+    "mtime": 1784336481.866855,
+    "ast_hash": "41af4bdf117e5ccf2fb6340ff9a0e68c",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000010_fix_salary_seeds.up.sql": {
+    "mtime": 1784336481.926842,
+    "ast_hash": "285c65cfd585a447f324617fddc0a59c",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000011_stock_session_cash_debt.down.sql": {
+    "mtime": 1784343838.2359672,
+    "ast_hash": "687416cdeb3f0873127297a5f6035644",
+    "semantic_hash": ""
+  },
+  "db/migrations/postgres/000011_stock_session_cash_debt.up.sql": {
+    "mtime": 1784343838.235967,
+    "ast_hash": "6e4a5500c82016fb0379b4780b3b12cb",
+    "semantic_hash": ""
   }
 }

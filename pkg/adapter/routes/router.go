@@ -10,11 +10,15 @@ import (
 	"github.com/raymondsugiarto/coffee-api/pkg/module/admin"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/authentication"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/authentication/token"
+	cashdebt "github.com/raymondsugiarto/coffee-api/pkg/module/cash_debt"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/company"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/driver"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/item"
+	itemcategory "github.com/raymondsugiarto/coffee-api/pkg/module/item_category"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/order"
 	orderitem "github.com/raymondsugiarto/coffee-api/pkg/module/order/order_item"
+	"github.com/raymondsugiarto/coffee-api/pkg/module/payroll"
+	salarycomponent "github.com/raymondsugiarto/coffee-api/pkg/module/salary_component"
 	stocksession "github.com/raymondsugiarto/coffee-api/pkg/module/stock_session"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/user"
 	usercredential "github.com/raymondsugiarto/coffee-api/pkg/module/user-credential"
@@ -50,7 +54,23 @@ func InitRouter(app fiber.Router) {
 
 	// Item
 	itemRepo := item.NewRepository(dbConn)
-	itemService := item.NewService(itemRepo, companyService)
+	itemService := item.NewService(itemRepo)
+
+	// Item Category
+	itemCategoryRepo := itemcategory.NewRepository(dbConn)
+	itemCategoryService := itemcategory.NewService(itemCategoryRepo)
+
+	// Salary Component
+	salaryComponentRepo := salarycomponent.NewRepository(dbConn)
+	salaryComponentService := salarycomponent.NewService(salaryComponentRepo)
+
+	// Payroll (employee_salary + employee_salary_component)
+	payrollRepo := payroll.NewRepository(dbConn)
+	payrollService := payroll.NewService(payrollRepo)
+
+	// Cash Debt (driver cash advances ledger)
+	cashDebtRepo := cashdebt.NewRepository(dbConn)
+	cashDebtService := cashdebt.NewService(cashDebtRepo)
 
 	// Order
 	orderRepo := order.NewRepository(dbConn)
@@ -75,6 +95,11 @@ func InitRouter(app fiber.Router) {
 
 	api := app.Group("/api/", middleware.Protected())
 	ItemRouter(api, itemService)
+	ItemCategoryRouter(api, itemCategoryService)
+	SalaryComponentRouter(api, salaryComponentService)
+	PayrollRouter(api, payrollService)
+	CashDebtRouter(api, cashDebtService)
+	CompanyRouter(api, companyService)
 	OrderRouter(api, orderService)
 	OrderItemRouter(api, orderItemService)
 	ProductRouter(api, stockSessionItemService)
@@ -93,6 +118,67 @@ func ItemRouter(app fiber.Router,
 	itemService item.Service,
 ) {
 	app.Get("/items", handlers.FindAllItems(itemService))
+	app.Get("/items/:id", handlers.FindOneItem(itemService))
+	app.Post("/items", handlers.CreateItem(itemService))
+	app.Put("/items/:id", handlers.UpdateItem(itemService))
+	app.Delete("/items/:id", handlers.DeleteItem(itemService))
+}
+
+func ItemCategoryRouter(app fiber.Router,
+	itemCategoryService itemcategory.Service,
+) {
+	app.Get("/item-categories", handlers.FindAllItemCategories(itemCategoryService))
+	app.Get("/item-categories/:id", handlers.FindOneItemCategory(itemCategoryService))
+	app.Post("/item-categories", handlers.CreateItemCategory(itemCategoryService))
+	app.Put("/item-categories/:id", handlers.UpdateItemCategory(itemCategoryService))
+	app.Delete("/item-categories/:id", handlers.DeleteItemCategory(itemCategoryService))
+}
+
+func SalaryComponentRouter(app fiber.Router,
+	salaryComponentService salarycomponent.Service,
+) {
+	app.Get("/salary-components", handlers.FindAllSalaryComponents(salaryComponentService))
+	app.Get("/salary-components/:id", handlers.FindOneSalaryComponent(salaryComponentService))
+	app.Post("/salary-components", handlers.CreateSalaryComponent(salaryComponentService))
+	app.Put("/salary-components/:id", handlers.UpdateSalaryComponent(salaryComponentService))
+	app.Delete("/salary-components/:id", handlers.DeleteSalaryComponent(salaryComponentService))
+}
+
+// CompanyRouter exposes the read-only company list used by the
+// SelectCompany dropdown (and any future admin picker).
+// Write operations are intentionally NOT wired here: the legacy
+// company handler in pkg/adapter/handlers/company uses a multipart
+// attachment flow that lives outside this scope.
+func CompanyRouter(app fiber.Router,
+	companyService company.Service,
+) {
+	app.Get("/companies", handlers.FindAllCompanies(companyService))
+}
+
+// PayrollRouter wires the payroll run lifecycle:
+//
+//	POST /payroll/simulate — read-only preview
+//	POST /payroll          — persist the approved run
+//	GET  /payroll          — list saved runs
+//	GET  /payroll/:id      — one run with components
+func PayrollRouter(app fiber.Router,
+	payrollService payroll.Service,
+) {
+	app.Post("/payroll/simulate", handlers.SimulatePayroll(payrollService))
+	app.Post("/payroll", handlers.SavePayroll(payrollService))
+	app.Get("/payroll", handlers.FindAllPayrolls(payrollService))
+	app.Get("/payroll/:id", handlers.FindOnePayroll(payrollService))
+}
+
+// CashDebtRouter wires the driver cash-advance ledger CRUD.
+func CashDebtRouter(app fiber.Router,
+	cashDebtService cashdebt.Service,
+) {
+	app.Get("/cash-debts", handlers.FindAllCashDebts(cashDebtService))
+	app.Get("/cash-debts/:id", handlers.FindOneCashDebt(cashDebtService))
+	app.Post("/cash-debts", handlers.CreateCashDebt(cashDebtService))
+	app.Put("/cash-debts/:id", handlers.UpdateCashDebt(cashDebtService))
+	app.Delete("/cash-debts/:id", handlers.DeleteCashDebt(cashDebtService))
 }
 
 func OrderRouter(app fiber.Router,
@@ -111,6 +197,7 @@ func OrderItemRouter(app fiber.Router,
 
 func ProductRouter(app fiber.Router, itemService stocksession.ItemService) {
 	app.Get("/products", handlers.FindAllStockSessionItems(itemService))
+	app.Get("/products/children", handlers.GetStockSessionItemChildren(itemService))
 	app.Get("/products/:id", handlers.GetStockSessionItem(itemService))
 }
 
@@ -128,7 +215,9 @@ func StockSessionRouter(app fiber.Router, ssService stocksession.Service, itemSe
 
 	// Item picker (reuses existing `item` table)
 	app.Get("/products", handlers.FindAllStockSessionItems(itemService))
+	app.Get("/products/children", handlers.GetStockSessionItemChildren(itemService))
 	app.Get("/products/:id", handlers.GetStockSessionItem(itemService))
+	app.Post("/products/parent", handlers.SetStockSessionItemParent(itemService))
 
 	// Reports
 	app.Get("/report/dashboard", handlers.GetDashboard(ssService))

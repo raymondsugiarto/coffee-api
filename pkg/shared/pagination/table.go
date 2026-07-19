@@ -209,6 +209,15 @@ func getOperator(op string) (string, error) {
 		return ">=", nil
 	case "gt":
 		return ">", nil
+	// Like-style matching. Both forms are explicit so callers
+	// can opt into case-insensitive search (ilike) when the
+	// underlying DB supports it (Postgres: yes). Without
+	// this, callers that emit FilterItem{Op:"ilike"} hit
+	// `dbErrorOp` because no operator string is mapped.
+	case "like":
+		return "LIKE", nil
+	case "ilike":
+		return "iLIKE", nil
 	}
 	return "", errors.New("dbErrorOp")
 }

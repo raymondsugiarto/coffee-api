@@ -8,11 +8,14 @@ type Item struct {
 	Organization   *Organization
 	CategoryID     string
 	Category       *ItemCategory
+	ParentID       string
+	Parent         *Item
 	Code           string
 	SKU            string
 	Name           string
 	Price          float64
 	CostPrice      float64
+	Commision      float64
 	IsActive       bool
 	ItemCompany    []ItemCompany
 }

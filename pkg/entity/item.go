@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"strings"
+
 	"github.com/raymondsugiarto/coffee-api/pkg/model"
 	"github.com/raymondsugiarto/coffee-api/pkg/shared/pagination"
 )
@@ -34,19 +36,22 @@ func (d *ItemCategoryDto) ToModel() *model.ItemCategory {
 }
 
 type ItemDto struct {
-	ID             string          `json:"id"`
-	OrganizationID string          `json:"-"`
+	ID             string           `json:"id"`
+	OrganizationID string           `json:"-"`
 	Organization   *OrganizationDto `json:"-"`
-	CategoryID     string          `json:"categoryId"`
+	CategoryID     string           `json:"categoryId"`
 	Category       *ItemCategoryDto `json:"category,omitempty"`
-	CompanyID      string          `json:"companyId"`
-	Company        *CompanyDto     `json:"company"`
-	Code           string          `json:"code"`
-	SKU            string          `json:"sku"`
-	Name           string          `json:"name" validate:"required,min=1,max=255"`
-	Price          float64         `json:"sellingPrice" validate:"gte=0"`
-	CostPrice      float64         `json:"costPrice" validate:"gte=0"`
-	IsActive       bool            `json:"isActive"`
+	ParentID       string           `json:"parentId"`
+	Parent         *ItemDto         `json:"parent,omitempty"`
+	CompanyID      string           `json:"companyId"`
+	Company        *CompanyDto      `json:"company"`
+	Code           string           `json:"code"`
+	SKU            string           `json:"sku"`
+	Name           string           `json:"name" validate:"required,min=1,max=255"`
+	Price          float64          `json:"sellingPrice" validate:"gte=0"`
+	CostPrice      float64          `json:"costPrice" validate:"gte=0"`
+	Commision      float64          `json:"commision" validate:"gte=0"`
+	IsActive       bool             `json:"isActive"`
 }
 
 func NewItemDtoFromModel(m *model.Item) *ItemDto {
@@ -57,15 +62,20 @@ func NewItemDtoFromModel(m *model.Item) *ItemDto {
 		ID:             m.ID,
 		OrganizationID: m.OrganizationID,
 		CategoryID:     m.CategoryID,
+		ParentID:       m.ParentID,
 		Code:           m.Code,
 		SKU:            m.SKU,
 		Name:           m.Name,
 		Price:          m.Price,
 		CostPrice:      m.CostPrice,
+		Commision:      m.Commision,
 		IsActive:       m.IsActive,
 	}
 	if m.Category != nil {
 		d.Category = NewItemCategoryDtoFromModel(m.Category)
+	}
+	if m.Parent != nil {
+		d.Parent = NewItemDtoFromModel(m.Parent)
 	}
 	return d
 }
@@ -74,11 +84,13 @@ func (d *ItemDto) ToModel() *model.Item {
 	m := &model.Item{
 		OrganizationID: d.OrganizationID,
 		CategoryID:     d.CategoryID,
+		ParentID:       d.ParentID,
 		Code:           d.Code,
 		SKU:            d.SKU,
 		Name:           d.Name,
 		Price:          d.Price,
 		CostPrice:      d.CostPrice,
+		Commision:      d.Commision,
 		IsActive:       d.IsActive,
 	}
 	if d.ID != "" {
@@ -89,12 +101,11 @@ func (d *ItemDto) ToModel() *model.Item {
 
 type ItemFindAllRequest struct {
 	FindAllRequest
-	UserID         string
-	CompanyID      string
-	CategoryID     string
-	IsActive       *bool
-	Query          string
-	MyEmployeeItem bool
+	CategoryID string
+	IsActive   *bool
+	Query      string
+	ParentID   string   // <-- "parent_id" filter (exact). Empty = top-level.
+	ParentIDs  []string // <-- "parent_id IN (...)" filter. Empty = no restriction.
 }
 
 func (r *ItemFindAllRequest) GenerateFilter() {
@@ -103,5 +114,19 @@ func (r *ItemFindAllRequest) GenerateFilter() {
 	}
 	if r.IsActive != nil {
 		r.Filter = append(r.Filter, pagination.FilterItem{Field: "is_active", Op: "eq", Val: *r.IsActive})
+	}
+	if r.ParentID != "" {
+		r.Filter = append(r.Filter, pagination.FilterItem{Field: "parent_id", Op: "eq", Val: r.ParentID})
+	}
+}
+
+type ItemCategoryFindAllRequest struct {
+	FindAllRequest
+	Query string
+}
+
+func (r *ItemCategoryFindAllRequest) GenerateFilter() {
+	if q := strings.TrimSpace(r.Query); q != "" {
+		r.Filter = append(r.Filter, pagination.FilterItem{Field: "name", Op: "ilike", Val: "%" + q + "%"})
 	}
 }

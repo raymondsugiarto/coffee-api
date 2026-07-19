@@ -3,6 +3,7 @@ package handlers
 import (
 	"errors"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -40,6 +41,56 @@ func GetStockSessionItem(service stocksession.ItemService) fiber.Handler {
 	}
 }
 
+// GetStockSessionItemChildren returns items whose parent_id matches any of the
+// supplied parentIds. Supports comma-separated `parentIds` query param plus an
+// `includeInactive` flag. Used by the close-session UI to auto-expand parents.
+func GetStockSessionItemChildren(service stocksession.ItemService) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		raw := strings.TrimSpace(c.Query("parentIds"))
+		var ids []string
+		for _, p := range strings.Split(raw, ",") {
+			p = strings.TrimSpace(p)
+			if p != "" {
+				ids = append(ids, p)
+			}
+		}
+		includeInactive := c.Query("includeInactive") == "true"
+		result, err := service.GetItemChildren(c.Context(), ids, includeInactive)
+		if err != nil {
+			return err
+		}
+		return c.JSON(result)
+	}
+}
+
+type setItemParentRequest struct {
+	ParentID string   `json:"parentId" validate:"required"`
+	ChildIDs []string `json:"childIds" validate:"required,min=1,dive,required"`
+}
+
+// SetStockSessionItemParent bulk-updates the parent_id of every child in
+// childIds to point at parentId. The relation is keyed on UUID, not on code.
+// Used by the catalog admin UI to declare which items roll up under which
+// parent so the close-session picker can auto-expand variants.
+func SetStockSessionItemParent(service stocksession.ItemService) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		req := new(setItemParentRequest)
+		if err := c.BodyParser(req); err != nil {
+			return status.New(status.BadRequest, err)
+		}
+		if err := middleware.AppValidator.Validate(req); err != nil {
+			return err
+		}
+		if err := service.SetItemParent(c.Context(), req.ParentID, req.ChildIDs); err != nil {
+			return status.New(status.BadRequest, err)
+		}
+		return c.JSON(fiber.Map{
+			"updated":  len(req.ChildIDs),
+			"parentId": req.ParentID,
+		})
+	}
+}
+
 // ============ Open ============
 
 func OpenStockSession(service stocksession.Service) fiber.Handler {
@@ -58,8 +109,8 @@ func OpenStockSession(service stocksession.Service) fiber.Handler {
 			Notes:      req.Notes,
 		}
 		for _, it := range req.Items {
-			itemDto := it.ToDto()
-			dto.Items = append(dto.Items, *itemDto)
+			internal := it.ToStockSessionItemInputDto()
+			dto.Items = append(dto.Items, *internal.ToDto())
 		}
 
 		userCred := shared.GetUserCredential(c.Context())
@@ -140,8 +191,8 @@ func UpdateStockSession(service stocksession.Service) fiber.Handler {
 			Notes:      req.Notes,
 		}
 		for _, it := range req.Items {
-			itemDto := it.ToDto()
-			dto.Items = append(dto.Items, *itemDto)
+			internal := it.ToStockSessionItemInputDto()
+			dto.Items = append(dto.Items, *internal.ToDto())
 		}
 
 		userCred := shared.GetUserCredential(c.Context())
@@ -170,9 +221,12 @@ func CloseStockSession(service stocksession.Service) fiber.Handler {
 		if err := middleware.AppValidator.Validate(req); err != nil {
 			return err
 		}
-		dto := &entity.StockSessionDto{Notes: req.Notes}
+		dto := &entity.StockSessionDto{
+			Notes: req.Notes,
+		}
 		for _, it := range req.Items {
-			dto.Items = append(dto.Items, *it.ToDto())
+			internal := it.ToStockSessionItemInputDto()
+			dto.Items = append(dto.Items, *internal.ToDto())
 		}
 		for _, p := range req.Payments {
 			dto.Payments = append(dto.Payments, *p.ToDto())

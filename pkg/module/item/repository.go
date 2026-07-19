@@ -36,7 +36,10 @@ func (r *repository) Create(ctx context.Context, role *entity.ItemDto) (*entity.
 
 func (r *repository) Get(ctx context.Context, id string) (*entity.ItemDto, error) {
 	var m *model.Item
-	err := r.db.Where("id = ?", id).Preload("RoleParent").First(&m).Error
+	err := r.db.Where("id = ?", id).
+		Preload("Category").
+		Preload("Parent").
+		First(&m).Error
 	if err != nil {
 		return nil, err
 	}
@@ -64,14 +67,22 @@ func (r *repository) FindAll(ctx context.Context, req *entity.ItemFindAllRequest
 
 	tbl := pagination.NewTable(r.db)
 	dataTable, err := tbl.Pagination(func(i interface{}) *gorm.DB {
-		return r.db.Model(&model.Item{}).
-			Joins("JOIN item_company ON item.id = item_company.item_id").
-			Where("item_company.company_id = ?", req.CompanyID)
+		q := r.db.Model(&model.Item{})
+		// Org-scoped catalog. Items with a NULL organization_id are
+		// treated as global (visible to every org) so seed data is
+		// still surfaced. Same convention as item_category below.
+		if req.FindAllRequest.OrganizationData.ID != "" {
+			q = q.Where(
+				"item.organization_id IS NULL OR item.organization_id = ?",
+				req.FindAllRequest.OrganizationData.ID,
+			)
+		}
+		return q
 	}, &pagination.TableRequest{
 		Request:       req,
-		QueryField:    []string{},
+		QueryField:    []string{"name", "sku", "code"},
 		Data:          &m,
-		AllowedFields: []string{""},
+		AllowedFields: []string{"name", "code", "sku"},
 	})
 	if err != nil {
 		return nil, err
