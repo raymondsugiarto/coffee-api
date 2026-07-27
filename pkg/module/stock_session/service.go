@@ -9,6 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2/log"
 	"github.com/raymondsugiarto/coffee-api/pkg/entity"
 	"github.com/raymondsugiarto/coffee-api/pkg/model"
+	salarycomponent "github.com/raymondsugiarto/coffee-api/pkg/module/salary_component"
 	shared "github.com/raymondsugiarto/coffee-api/pkg/shared/context"
 	"github.com/raymondsugiarto/coffee-api/pkg/shared/pagination"
 	"github.com/raymondsugiarto/coffee-api/pkg/shared/response/status"
@@ -31,12 +32,27 @@ type Service interface {
 }
 
 type service struct {
-	repo Repository
-	db   *gorm.DB
+	repo                   Repository
+	db                     *gorm.DB
+	salaryComponentService salarycomponent.Service
 }
 
-func NewService(repo Repository, db *gorm.DB) Service {
-	return &service{repo: repo, db: db}
+// NewService wires the dependencies. `salaryComponentService` is
+// the module that owns the salary_component table; instead of
+// poking GORM directly to look up salary bands, this service now
+// asks the salarycomponent module. That keeps the SQL behind the
+// module boundary (the same module already powers the HTTP CRUD),
+// so order-by-minimum_target tuning lives in one place.
+func NewService(
+	repo Repository,
+	db *gorm.DB,
+	salaryComponentService salarycomponent.Service,
+) Service {
+	return &service{
+		repo:                   repo,
+		db:                     db,
+		salaryComponentService: salaryComponentService,
+	}
 }
 
 func (s *service) Open(ctx context.Context, dto *entity.StockSessionDto, actorID string) (*entity.StockSessionDto, error) {
@@ -301,6 +317,12 @@ func (s *service) hydrateItemSnapshots(ctx context.Context, dto *entity.StockSes
 //	employee_id → admin_company.admin_id → company.id
 //	                                         → salary_component.company_id
 //
+// The salary_component lookup is delegated to the salarycomponent
+// module so the SQL (and the `order by minimum_target` clause
+// the picking logic depends on) lives behind its module boundary.
+// admin_company stays inline because the admin module doesn't
+// expose a company-by-employee method yet.
+//
 // The salary breakdown is recomputed on every write (Open / Update /
 // Close) so reports don't need to re-derive it, and so changes to
 // the master salary_component table flow through to past sessions
@@ -332,19 +354,29 @@ func (s *service) resolveAndApplySalary(ctx context.Context, dto *entity.StockSe
 		)
 		return
 	}
-	var rows []model.SalaryComponent
-	if err := s.db.Where("company_id = ?", companyID).Find(&rows).Error; err != nil {
+	// Delegate the salary-component SQL to the salarycomponent
+	// module. The module orders rows by minimum_target ASC so the
+	// picking loop in RecomputeSalary gets them in the right order
+	// without sorting here.
+	components, err := s.salaryComponentService.FindByCompany(ctx, companyID)
+	if err != nil {
 		log.WithContext(ctx).Warnf(
 			"[stock-session] salary lookup failed (salary_component): company=%s err=%v",
 			companyID, err,
 		)
 		return
 	}
-	components := make([]entity.SalaryComponentDto, 0, len(rows))
-	for i := range rows {
-		components = append(components, *entity.NewSalaryComponentDtoFromModel(&rows[i]))
+	// RecomputeSalary takes a value slice (not pointer slice), so
+	// dereference here before calling. Allocation is bounded by
+	// the company's salary-component count (small), and the DTO is
+	// read-only inside RecomputeSalary.
+	values := make([]entity.SalaryComponentDto, 0, len(components))
+	for _, c := range components {
+		if c != nil {
+			values = append(values, *c)
+		}
 	}
-	dto.RecomputeSalary(components, dto.TotalItems)
+	dto.RecomputeSalary(values, dto.TotalItems)
 }
 
 // func (s *service) appendLog(ctx context.Context, sessionID, adminID, action, detail string) {

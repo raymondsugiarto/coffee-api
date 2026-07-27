@@ -384,22 +384,23 @@ type CloseStockSessionInputDto struct {
 }
 
 type StockSessionDto struct {
-	ID              string     `json:"id"`
-	OrganizationID  string     `json:"-"`
-	EmployeeID      string     `json:"employeeId"`
-	Employee        *AdminDto  `json:"employee,omitempty"`
-	Date            string     `json:"date"` // YYYY-MM-DD
-	Status          string     `json:"status"`
-	OpenedAt        time.Time  `json:"openedAt"`
-	ClosedAt        *time.Time `json:"closedAt,omitempty"`
-	TotalSales      float64    `json:"totalSales"`
-	TotalCash       float64    `json:"totalCash"`
-	TotalQris       float64    `json:"totalQris"`
-	TotalOther      float64    `json:"totalOther"`
-	TotalPayment    float64    `json:"totalPayment"`
-	Difference      float64    `json:"difference"`
-	TotalItems      int        `json:"totalItems"`
-	TotalCommission float64    `json:"totalCommission"`
+	ID                  string     `json:"id"`
+	OrganizationID      string     `json:"-"`
+	EmployeeID          string     `json:"employeeId"`
+	Employee            *AdminDto  `json:"employee,omitempty"`
+	Date                string     `json:"date"` // YYYY-MM-DD
+	Status              string     `json:"status"`
+	OpenedAt            time.Time  `json:"openedAt"`
+	ClosedAt            *time.Time `json:"closedAt,omitempty"`
+	TotalSales          float64    `json:"totalSales"`
+	TotalCash           float64    `json:"totalCash"`
+	TotalQris           float64    `json:"totalQris"`
+	TotalOther          float64    `json:"totalOther"`
+	TotalPayment        float64    `json:"totalPayment"`
+	Difference          float64    `json:"difference"`
+	TotalItems          int        `json:"totalItems"`
+	TotalCommission     float64    `json:"totalCommission"`
+	MinTargetCommission float64    `json:"minTargetCommission"` // derived from salary_component, used to determine if the driver met the minimum commission target for bonus
 	// Salary breakdown resolved from salary_component for the
 	// driver's company. Computed server-side on every write.
 	MealAllowance float64 `json:"mealAllowance"`
@@ -461,26 +462,27 @@ func NewStockSessionDtoFromModel(m *model.StockSession) *StockSessionDto {
 
 func (d *StockSessionDto) ToModel() *model.StockSession {
 	m := &model.StockSession{
-		OrganizationID:  d.OrganizationID,
-		EmployeeID:      d.EmployeeID,
-		Status:          d.Status,
-		OpenedAt:        d.OpenedAt,
-		ClosedAt:        d.ClosedAt,
-		TotalSales:      d.TotalSales,
-		TotalCash:       d.TotalCash,
-		TotalQris:       d.TotalQris,
-		TotalOther:      d.TotalOther,
-		TotalPayment:    d.TotalPayment,
-		Difference:      d.Difference,
-		TotalItems:      d.TotalItems,
-		TotalCommission: d.TotalCommission,
-		MealAllowance:   d.MealAllowance,
-		Attendance:      d.Attendance,
-		BonusTarget:     d.BonusTarget,
-		TotalSalary:     d.TotalSalary,
-		CashDebt:        d.CashDebt,
-		Notes:           d.Notes,
-		CreatedBy:       d.CreatedBy,
+		OrganizationID:      d.OrganizationID,
+		EmployeeID:          d.EmployeeID,
+		Status:              d.Status,
+		OpenedAt:            d.OpenedAt,
+		ClosedAt:            d.ClosedAt,
+		TotalSales:          d.TotalSales,
+		TotalCash:           d.TotalCash,
+		TotalQris:           d.TotalQris,
+		TotalOther:          d.TotalOther,
+		TotalPayment:        d.TotalPayment,
+		Difference:          d.Difference,
+		TotalItems:          d.TotalItems,
+		TotalCommission:     d.TotalCommission,
+		MinTargetCommission: d.MinTargetCommission,
+		MealAllowance:       d.MealAllowance,
+		Attendance:          d.Attendance,
+		BonusTarget:         d.BonusTarget,
+		TotalSalary:         d.TotalSalary,
+		CashDebt:            d.CashDebt,
+		Notes:               d.Notes,
+		CreatedBy:           d.CreatedBy,
 	}
 	if d.ID != "" {
 		m.ID = d.ID
@@ -631,16 +633,22 @@ func (d *StockSessionDto) RecomputeSalary(components []SalaryComponentDto, total
 	// decision. The `Attendance` column is preserved on the model
 	// and DTO for historical/reporting parity, but is always 0
 	// on every write.
-	var meal, bonus float64
+	var meal, bonus, minTargetCommission float64
+	var attendance = 0.0
 	var bestBonusTarget = -1
 	for _, c := range components {
 		switch c.ComponentType {
-		case SalaryComponentTypeMealAllowance:
+		case ComponentTypeCommission:
+			minTargetCommission = c.MinimumTarget * c.Amount
+		case ComponentTypeMealAllowance:
 			meal += c.Amount
-		case SalaryComponentTypeAttendance:
+		case ComponentTypeAttendance:
 			// Intentionally ignored: bonus-hadir removed.
 			// Field kept at 0 for column/UI stability.
-		case SalaryComponentTypeBonusTarget:
+			if c.MinimumTarget <= float64(totalQty) {
+				attendance = c.Amount
+			}
+		case ComponentTypeBonusTarget:
 			if c.MinimumTarget <= float64(totalQty) &&
 				c.MinimumTarget > float64(bestBonusTarget) {
 				bestBonusTarget = int(c.MinimumTarget)
@@ -649,9 +657,10 @@ func (d *StockSessionDto) RecomputeSalary(components []SalaryComponentDto, total
 		}
 	}
 	d.MealAllowance = meal
-	d.Attendance = 0 // see comment above
+	d.Attendance = attendance
 	d.BonusTarget = bonus
-	d.TotalSalary = meal + bonus
+	d.TotalSalary = (d.TotalCommission - minTargetCommission) + meal + bonus + attendance
+	d.MinTargetCommission = minTargetCommission
 }
 
 type StockSessionFindAllRequest struct {

@@ -38,9 +38,6 @@ CREATE TABLE IF NOT EXISTS employee_salary (
     deleted_at                  TIMESTAMP     NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_employee_salary_admin_date
-    ON employee_salary (admin_id_employee, start_date, end_date);
-
 CREATE TABLE IF NOT EXISTS employee_salary_component (
     id                  varchar(255) PRIMARY KEY,
     employee_salary_id  varchar(255) NOT NULL,
@@ -53,9 +50,3 @@ CREATE TABLE IF NOT EXISTS employee_salary_component (
     updated_at          TIMESTAMP     NULL,
     deleted_at          TIMESTAMP     NULL
 );
-
-CREATE INDEX IF NOT EXISTS idx_employee_salary_component_header
-    ON employee_salary_component (employee_salary_id);
-
-CREATE INDEX IF NOT EXISTS idx_employee_salary_component_ref
-    ON employee_salary_component (ref_table, ref_id);

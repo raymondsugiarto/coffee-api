@@ -116,27 +116,6 @@ func (r *repository) Simulate(
 		SessionCount:    len(sessions),
 	}
 	for _, ss := range sessions {
-		// Live-recompute salary for this session — same inputs
-		// RecomputeSalary(components, TotalItems) would have used
-		// at close time. Falls back to the persisted snapshot when
-		// no salary config exists, matching the runtime close
-		// contract exactly.
-		var meal, attendance, bonus, totalSalary float64
-		if len(components) > 0 {
-			dto := &entity.StockSessionDto{
-				TotalItems: ss.TotalItems,
-			}
-			dto.RecomputeSalary(components, ss.TotalItems)
-			meal = dto.MealAllowance
-			attendance = dto.Attendance
-			bonus = dto.BonusTarget
-			totalSalary = dto.TotalSalary
-		} else {
-			meal = ss.MealAllowance
-			attendance = ss.Attendance
-			bonus = ss.BonusTarget
-			totalSalary = ss.TotalSalary
-		}
 		// Attach every cash_debt row whose date matches this
 		// session's date. A session that happens on a date with no
 		// advances still gets an empty (non-nil) slice so the
@@ -155,28 +134,26 @@ func (r *repository) Simulate(
 			Date:          sessionDate,
 			Status:        ss.Status,
 			TotalSales:    ss.TotalSales,
-			Commission:    ss.TotalCommission,
-			MealAllowance: meal,
-			BonusTarget:   bonus,
-			TotalSalary:   totalSalary,
+			Attendance:    ss.Attendance,
+			Commission:    ss.TotalCommission - ss.MinTargetCommission,
+			MealAllowance: ss.MealAllowance,
+			BonusTarget:   ss.BonusTarget,
+			TotalSalary:   ss.TotalSalary,
 			CashDebts:     debtDtos,
 		})
-		out.TotalCommission += ss.TotalCommission
-		out.TotalMealAllowance += meal
-		out.TotalBonusTarget += bonus
-		out.TotalAttendance += attendance
+		out.TotalCommission += ss.TotalCommission - ss.MinTargetCommission
+		out.TotalMealAllowance += ss.MealAllowance
+		out.TotalBonusTarget += ss.BonusTarget
+		out.TotalAttendance += ss.Attendance
+		out.TotalSalary += ss.TotalSalary
+
 		// If the same cash_debt row falls on a date that has two
 		// sessions (rare: half-day split), it would be counted twice
 		// here. We accept the duplication as the conservative choice
 		// so the operator can see the row attached to BOTH closes.
 		out.TotalCashDebt += sessionDebtTotal
+		out.RemainingSalary += ss.TotalSalary - sessionDebtTotal
 	}
-	out.TotalSalary = out.TotalMealAllowance + out.TotalAttendance +
-		out.TotalCommission + out.TotalBonusTarget
-	// Cash_debt is money the driver already owes the company on
-	// the same range — net it out alongside cash_receipt so
-	// remaining reflects what the company still owes the driver.
-	out.RemainingSalary = out.TotalSalary - out.TotalCashReceipt - out.TotalCashDebt
 	return out, nil
 }
 

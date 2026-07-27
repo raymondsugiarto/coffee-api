@@ -25,8 +25,3 @@ CREATE TABLE IF NOT EXISTS cash_debt (
     deleted_at      TIMESTAMP      NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_cash_debt_employee_date
-    ON cash_debt (admin_id_employee, date);
-
-CREATE INDEX IF NOT EXISTS idx_cash_debt_org_date
-    ON cash_debt (organization_id, date);

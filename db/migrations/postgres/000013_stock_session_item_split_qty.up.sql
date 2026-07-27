@@ -17,20 +17,3 @@ ALTER TABLE stock_session_item
     ADD COLUMN IF NOT EXISTS cash_sold_qty INT NOT NULL DEFAULT 0,
     ADD COLUMN IF NOT EXISTS cashless_sold_qty INT NOT NULL DEFAULT 0;
 
--- Backfill: legacy sold_qty → cash_sold_qty, cashless = 0.
-UPDATE stock_session_item
-   SET cash_sold_qty = sold_qty
- WHERE cash_sold_qty = 0 AND cashless_sold_qty = 0 AND sold_qty > 0;
-
--- Soften the non-negative check to include the two new columns.
-ALTER TABLE stock_session_item
-    DROP CONSTRAINT IF EXISTS chk_ssi_qty_nonneg;
-ALTER TABLE stock_session_item
-    ADD CONSTRAINT chk_ssi_qty_nonneg
-    CHECK (
-        out_qty >= 0
-        AND return_qty >= 0
-        AND sold_qty >= 0
-        AND cash_sold_qty >= 0
-        AND cashless_sold_qty >= 0
-    );

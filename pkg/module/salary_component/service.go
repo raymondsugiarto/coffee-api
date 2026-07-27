@@ -14,6 +14,10 @@ type Service interface {
 	Update(ctx context.Context, dto *entity.SalaryComponentDto) (*entity.SalaryComponentDto, error)
 	Delete(ctx context.Context, id string) error
 	FindAll(ctx context.Context, req *entity.SalaryComponentFindAllRequest) (*pagination.ResultPagination, error)
+	// FindByCompany returns the salary bands for one company,
+	// ordered by minimum_target ASC. Used by the stock-session
+	// close path so the picking logic can walk the list directly.
+	FindByCompany(ctx context.Context, companyID string) ([]*entity.SalaryComponentDto, error)
 }
 
 type service struct {
@@ -58,4 +62,19 @@ func (s *service) FindAll(
 		req.FindAllRequest.OrganizationData.ID = shared.GetOrganization(ctx).ID
 	}
 	return s.repo.FindAll(ctx, req)
+}
+
+// FindByCompany is the canonical entry point that the
+// stock-session close path uses to resolve salary bands. We pass
+// the company id through unmodified — the repository handles the
+// empty-company short-circuit so the caller doesn't need to.
+//
+// Errors are propagated as-is: callers (e.g. stock_session) treat
+// a non-nil error as "salary lookup failed, fall back to a 0-amount
+// breakdown" rather than aborting the close, so we don't wrap.
+func (s *service) FindByCompany(
+	ctx context.Context,
+	companyID string,
+) ([]*entity.SalaryComponentDto, error) {
+	return s.repo.FindByCompany(ctx, companyID)
 }

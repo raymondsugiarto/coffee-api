@@ -8,21 +8,22 @@ import (
 
 type StockSession struct {
 	concern.CommonWithIDs
-	OrganizationID  string
-	EmployeeID      string
-	Employee        *Admin
-	Date            time.Time
-	Status          string // OPEN | CLOSED
-	OpenedAt        time.Time
-	ClosedAt        *time.Time
-	TotalSales      float64
-	TotalCash       float64
-	TotalQris       float64
-	TotalOther      float64
-	TotalPayment    float64
-	Difference      float64
-	TotalItems      int
-	TotalCommission float64
+	OrganizationID      string
+	EmployeeID          string
+	Employee            *Admin
+	Date                time.Time
+	Status              string // OPEN | CLOSED
+	OpenedAt            time.Time
+	ClosedAt            *time.Time
+	TotalSales          float64
+	TotalCash           float64
+	TotalQris           float64
+	TotalOther          float64
+	TotalPayment        float64
+	Difference          float64
+	TotalItems          int
+	MinTargetCommission float64
+	TotalCommission     float64
 	// Salary breakdown resolved from salary_component for the
 	// employee's company. Computed on close (and on every write)
 	// so reports don't need to re-derive it.

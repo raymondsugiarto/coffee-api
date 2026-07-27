@@ -143,7 +143,23 @@ func (r *repository) updateInTx(dto *entity.StockSessionDto) (*entity.StockSessi
 	var result *entity.StockSessionDto
 	err := r.db.Transaction(func(tx *gorm.DB) error {
 		m := dto.ToModel()
-		// Replace children atomically
+
+		// Update the parent first via Save — this persists every
+		// scalar column (totals, status, cash_debt, etc.). We do
+		// NOT rely on association auto-save here because the
+		// children slices below are handled explicitly. Auto-save
+		// was producing inconsistent rows on some Go/GORM combos
+		// (for example TotalQris landed as 0 because the children
+		// failed silently on insert) — explicit writes are
+		// predictable and the SQL log shows exactly what landed.
+		if err := tx.Save(m).Error; err != nil {
+			return err
+		}
+
+		// Wipe and re-insert child rows so the close path always
+		// produces a clean row-set keyed on session_id. We
+		// deliberately delete AFTER the parent Save to keep the
+		// child-vs-parent ordering obvious in the SQL log.
 		if err := tx.Where("session_id = ?", m.ID).Delete(&model.StockSessionItem{}).Error; err != nil {
 			return err
 		}
@@ -153,9 +169,37 @@ func (r *repository) updateInTx(dto *entity.StockSessionDto) (*entity.StockSessi
 		if err := tx.Where("session_id = ?", m.ID).Delete(&model.CashAdjustment{}).Error; err != nil {
 			return err
 		}
-		if err := tx.Save(m).Error; err != nil {
-			return err
+
+		// Insert stock_session_item rows explicitly with the
+		// parent SessionID. Omit("Item") keeps any nested Item
+		// DTO from leaking into an item-table INSERT.
+		for _, it := range dto.Items {
+			item := it.ToModel()
+			item.SessionID = m.ID
+			if err := tx.Omit("Item").Create(item).Error; err != nil {
+				return err
+			}
 		}
+		// Insert payment_detail rows explicitly. This is the row
+		// that drives `total_qris`/`total_cash` — without the
+		// explicit INSERT the totals computed by RecomputeTotals
+		// had no payment rows backing them.
+		for _, p := range dto.Payments {
+			pay := p.ToModel()
+			pay.SessionID = m.ID
+			if err := tx.Create(pay).Error; err != nil {
+				return err
+			}
+		}
+		// Insert cash_adjustment rows explicitly.
+		for _, a := range dto.Adjustments {
+			adj := a.ToModel()
+			adj.SessionID = m.ID
+			if err := tx.Create(adj).Error; err != nil {
+				return err
+			}
+		}
+
 		// Reload with associations
 		var reloaded model.StockSession
 		if err := tx.

@@ -7,6 +7,7 @@ import (
 	"github.com/raymondsugiarto/coffee-api/pkg/infrastructure/database"
 	"github.com/raymondsugiarto/coffee-api/pkg/infrastructure/middleware"
 	"github.com/raymondsugiarto/coffee-api/pkg/infrastructure/middleware/organization"
+	accounting "github.com/raymondsugiarto/coffee-api/pkg/module/accounting"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/admin"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/authentication"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/authentication/token"
@@ -64,6 +65,19 @@ func InitRouter(app fiber.Router) {
 	salaryComponentRepo := salarycomponent.NewRepository(dbConn)
 	salaryComponentService := salarycomponent.NewService(salaryComponentRepo)
 
+	// Accounting (chart of accounts + ledger)
+	accountRepo := accounting.NewAccountRepository(dbConn)
+	accountService := accounting.NewAccountService(accountRepo)
+	// accountMutationRepo is wired here so any future flow that
+	// wants to post to the ledger can reuse this single instance
+	// instead of constructing a fresh repo per call site. The Go
+	// compiler insists we use every binding, so the mutation
+	// service is built once and stashed in the registry below
+	// for the same reason.
+	accountMutationRepo := accounting.NewAccountMutationRepository(dbConn)
+	accountMutationService := accounting.NewAccountMutationService(accountMutationRepo, accountService)
+	_ = accountMutationService // exposed for future mutation REST routes / inter-module posts
+
 	// Payroll (employee_salary + employee_salary_component)
 	payrollRepo := payroll.NewRepository(dbConn)
 	payrollService := payroll.NewService(payrollRepo)
@@ -83,9 +97,16 @@ func InitRouter(app fiber.Router) {
 	// Driver (employees filtered)
 	driverService := driver.NewService(dbConn)
 
-	// Stock Session (with embedded item picker service)
+	// Stock Session (with embedded item picker service). The
+	// salary-resolution path is delegated to the salarycomponent
+	// module rather than poking salary_component directly with
+	// GORM — keeps the SQL behind its module boundary.
 	stockSessionRepo := stocksession.NewRepository(dbConn)
-	stockSessionService := stocksession.NewService(stockSessionRepo, dbConn)
+	stockSessionService := stocksession.NewService(
+		stockSessionRepo,
+		dbConn,
+		salaryComponentService,
+	)
 	stockSessionItemService := stocksession.NewItemService(dbConn)
 
 	// Middleware
@@ -97,6 +118,7 @@ func InitRouter(app fiber.Router) {
 	ItemRouter(api, itemService)
 	ItemCategoryRouter(api, itemCategoryService)
 	SalaryComponentRouter(api, salaryComponentService)
+	AccountRouter(api, accountService)
 	PayrollRouter(api, payrollService)
 	CashDebtRouter(api, cashDebtService)
 	CompanyRouter(api, companyService)
@@ -142,6 +164,20 @@ func SalaryComponentRouter(app fiber.Router,
 	app.Post("/salary-components", handlers.CreateSalaryComponent(salaryComponentService))
 	app.Put("/salary-components/:id", handlers.UpdateSalaryComponent(salaryComponentService))
 	app.Delete("/salary-components/:id", handlers.DeleteSalaryComponent(salaryComponentService))
+}
+
+// AccountRouter exposes the chart-of-accounts CRUD on top of the
+// accounting service. Mutations post against the ledger via
+// AccountMutationService from upstream flows; this router only
+// speaks to the master `account` table.
+func AccountRouter(app fiber.Router,
+	accountService accounting.AccountService,
+) {
+	app.Get("/accounts", handlers.FindAllAccounts(accountService))
+	app.Get("/accounts/:id", handlers.FindOneAccount(accountService))
+	app.Post("/accounts", handlers.CreateAccount(accountService))
+	app.Put("/accounts/:id", handlers.UpdateAccount(accountService))
+	app.Delete("/accounts/:id", handlers.DeleteAccount(accountService))
 }
 
 // CompanyRouter exposes the read-only company list used by the

@@ -153,15 +153,17 @@ type SimulatePayrollSessionCashDebtDto struct {
 // can see exactly which advances are being netted from the
 // remaining salary, instead of seeing only the rolled total.
 type SimulatePayrollSessionDto struct {
-	SessionID     string                              `json:"sessionId"`
-	Date          string                              `json:"date"`
-	Status        string                              `json:"status"`
-	TotalSales    float64                             `json:"totalSales"`
-	Commission    float64                             `json:"commission"`
-	MealAllowance float64                             `json:"mealAllowance"`
-	BonusTarget   float64                             `json:"bonusTarget"`
-	TotalSalary   float64                             `json:"totalSalary"`
-	CashDebts     []SimulatePayrollSessionCashDebtDto `json:"cashDebts"`
+	SessionID           string                              `json:"sessionId"`
+	Date                string                              `json:"date"`
+	Status              string                              `json:"status"`
+	TotalSales          float64                             `json:"totalSales"`
+	Attendance          float64                             `json:"attendance"`
+	MinTargetCommission float64                             `json:"minTargetCommission"`
+	Commission          float64                             `json:"commission"`
+	MealAllowance       float64                             `json:"mealAllowance"`
+	BonusTarget         float64                             `json:"bonusTarget"`
+	TotalSalary         float64                             `json:"totalSalary"`
+	CashDebts           []SimulatePayrollSessionCashDebtDto `json:"cashDebts"`
 }
 
 // SimulatePayrollResultDto is the full preview the frontend renders
@@ -178,7 +180,7 @@ type SimulatePayrollResultDto struct {
 	EndDate            string                      `json:"endDate"`
 	Sessions           []SimulatePayrollSessionDto `json:"sessions"`
 	TotalMealAllowance float64                     `json:"totalMealAllowance"`
-	TotalAttendance    float64                     `json:"totalAttendanceAllowance"`
+	TotalAttendance    float64                     `json:"totalAttendance"`
 	TotalCommission    float64                     `json:"totalCommission"`
 	TotalBonusTarget   float64                     `json:"totalBonusTarget"`
 	TotalSalary        float64                     `json:"totalSalary"`
