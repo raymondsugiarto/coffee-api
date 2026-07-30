@@ -5,6 +5,7 @@ import (
 	"github.com/raymondsugiarto/coffee-api/pkg/entity"
 	"github.com/raymondsugiarto/coffee-api/pkg/infrastructure/middleware"
 	"github.com/raymondsugiarto/coffee-api/pkg/module/item"
+	shared "github.com/raymondsugiarto/coffee-api/pkg/shared/context"
 	"github.com/raymondsugiarto/coffee-api/pkg/shared/response/status"
 )
 
