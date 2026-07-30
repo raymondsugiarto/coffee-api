@@ -48,7 +48,7 @@ type ItemDto struct {
 	Code           string           `json:"code"`
 	SKU            string           `json:"sku"`
 	Name           string           `json:"name" validate:"required,min=1,max=255"`
-	Price          float64          `json:"sellingPrice" validate:"gte=0"`
+	Price          float64          `json:"price" validate:"gte=0"`
 	CostPrice      float64          `json:"costPrice" validate:"gte=0"`
 	Commision      float64          `json:"commision" validate:"gte=0"`
 	IsActive       bool             `json:"isActive"`
