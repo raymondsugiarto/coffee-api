@@ -90,6 +90,7 @@ type ItemFindAllRequest struct {
 	FindAllRequest
 	UserID string
 	CompanyID string
+	MyEmployeeItem bool
 	CategoryID string
 	IsActive   *bool
 	Query      string
