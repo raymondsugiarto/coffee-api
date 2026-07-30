@@ -88,6 +88,7 @@ func (d *ItemDto) ToModel() *model.Item {
 
 type ItemFindAllRequest struct {
 	FindAllRequest
+	UserID string
 	CompanyID string
 	CategoryID string
 	IsActive   *bool
