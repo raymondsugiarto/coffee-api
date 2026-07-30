@@ -15,9 +15,9 @@ func FindAllItems(service item.Service) fiber.Handler {
 			return status.New(status.BadRequest, err)
 		}
 
-		// Org id is filled in by the service from the request context
-		// if the caller did not pin one. No user-id / company-id wiring
-		// needed — the catalog is org-scoped.
+		userCred := shared.GetUserCredential(c.Context())
+		itemReq.UserID = userCred.UserID
+
 		result, err := service.FindAll(c.Context(), itemReq)
 		if err != nil {
 			return err
