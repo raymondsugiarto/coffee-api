@@ -16,8 +16,10 @@ func FindAllItems(service item.Service) fiber.Handler {
 			return status.New(status.BadRequest, err)
 		}
 
-		userCred := shared.GetUserCredential(c.Context())
-		itemReq.UserID = userCred.UserID
+		if itemReq.MyEmployeeItem {
+			userCred := shared.GetUserCredential(c.Context())
+			itemReq.UserID = userCred.UserID
+		}
 
 		result, err := service.FindAll(c.Context(), itemReq)
 		if err != nil {

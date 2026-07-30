@@ -68,8 +68,12 @@ func (r *repository) FindAll(ctx context.Context, req *entity.ItemFindAllRequest
 	tbl := pagination.NewTable(r.db)
 	dataTable, err := tbl.Pagination(func(i interface{}) *gorm.DB {
 		q := r.db.Model(&model.Item{}).
-			Joins("JOIN item_company ON item.id = item_company.item_id").
+			Joins("JOIN item_company ON item.id = item_company.item_id AND item_company.deleted_at IS NULL").
 			Where("item_company.company_id = ?", req.CompanyID)
+
+		if req.Session == model.SessionTypeMorning {
+			q.Where("item.parent_id is null")
+		}
 		// Org-scoped catalog. Items with a NULL organization_id are
 		// treated as global (visible to every org) so seed data is
 		// still surfaced. Same convention as item_category below.

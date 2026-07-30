@@ -6,6 +6,13 @@ import (
 	"github.com/raymondsugiarto/coffee-api/pkg/model/concern"
 )
 
+type SessionType string
+
+const (
+	SessionTypeMorning SessionType = "MORNING"
+	SessionTypeEvening SessionType = "EVENING"
+)
+
 type StockSession struct {
 	concern.CommonWithIDs
 	OrganizationID      string

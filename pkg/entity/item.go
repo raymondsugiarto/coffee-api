@@ -88,14 +88,16 @@ func (d *ItemDto) ToModel() *model.Item {
 
 type ItemFindAllRequest struct {
 	FindAllRequest
-	UserID string
-	CompanyID string
+	UserID         string
+	AdminID        string `json:"adminId"`
+	CompanyID      string
 	MyEmployeeItem bool
-	CategoryID string
-	IsActive   *bool
-	Query      string
-	ParentID   string   // <-- "parent_id" filter (exact). Empty = top-level.
-	ParentIDs  []string // <-- "parent_id IN (...)" filter. Empty = no restriction.
+	Session        model.SessionType
+	CategoryID     string
+	IsActive       *bool
+	Query          string
+	ParentID       string   // <-- "parent_id" filter (exact). Empty = top-level.
+	ParentIDs      []string // <-- "parent_id IN (...)" filter. Empty = no restriction.
 }
 
 func (r *ItemFindAllRequest) GenerateFilter() {

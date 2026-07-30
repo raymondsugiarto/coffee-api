@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/raymondsugiarto/coffee-api/pkg/module/company"
 	"github.com/raymondsugiarto/coffee-api/pkg/entity"
+	"github.com/raymondsugiarto/coffee-api/pkg/module/company"
 	shared "github.com/raymondsugiarto/coffee-api/pkg/shared/context"
 	"github.com/raymondsugiarto/coffee-api/pkg/shared/pagination"
 )
@@ -19,7 +19,7 @@ type Service interface {
 }
 
 type service struct {
-	repo Repository
+	repo           Repository
 	companyService company.Service
 }
 
@@ -46,13 +46,35 @@ func (s *service) Delete(ctx context.Context, id string) error {
 }
 
 func (s *service) FindAll(ctx context.Context, req *entity.ItemFindAllRequest) (*pagination.ResultPagination, error) {
-	if req.MyEmployeeItem {
-		company, err := s.companyService.FindCompanyByUserID(ctx, req.UserID)
+	if err := s.fetchCompanyByUserID(ctx, req); err != nil {
+		return nil, err
+	}
+	if err := s.fetchCompanyByAdminID(ctx, req); err != nil {
+		return nil, err
+	}
+	return s.repo.FindAll(ctx, req)
+}
+
+func (s *service) fetchCompanyByAdminID(ctx context.Context, req *entity.ItemFindAllRequest) error {
+	if req.AdminID != "" {
+		company, err := s.companyService.FindCompanyByAdminID(ctx, req.AdminID)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		log.WithContext(ctx).Infof("company %+v", company)
 		req.CompanyID = company.ID
 	}
-	return s.repo.FindAll(ctx, req)
+	return nil
+}
+
+func (s *service) fetchCompanyByUserID(ctx context.Context, req *entity.ItemFindAllRequest) error {
+	if req.UserID != "" {
+		company, err := s.companyService.FindCompanyByUserID(ctx, req.UserID)
+		if err != nil {
+			return err
+		}
+		log.WithContext(ctx).Infof("company %+v", company)
+		req.CompanyID = company.ID
+	}
+	return nil
 }
