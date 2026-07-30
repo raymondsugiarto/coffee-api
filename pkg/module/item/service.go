@@ -43,12 +43,13 @@ func (s *service) Delete(ctx context.Context, id string) error {
 }
 
 func (s *service) FindAll(ctx context.Context, req *entity.ItemFindAllRequest) (*pagination.ResultPagination, error) {
-	// Items are now scoped to the active organization only — there
-	// is no longer a `company_id` join in the find-all query. Mirror
-	// the stock_session pattern: pull the org id off the request
-	// context and let the repository apply the WHERE clause.
-	if req.FindAllRequest.OrganizationData.ID == "" {
-		req.FindAllRequest.OrganizationData.ID = shared.GetOrganization(ctx).ID
+	if req.MyEmployeeItem {
+		company, err := s.companyService.FindCompanyByUserID(ctx, req.UserID)
+		if err != nil {
+			return nil, err
+		}
+		log.WithContext(ctx).Infof("company %+v", company)
+		req.CompanyID = company.ID
 	}
 	return s.repo.FindAll(ctx, req)
 }
