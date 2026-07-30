@@ -55,7 +55,7 @@ func InitRouter(app fiber.Router) {
 
 	// Item
 	itemRepo := item.NewRepository(dbConn)
-	itemService := item.NewService(itemRepo)
+	itemService := item.NewService(itemRepo, companyService)
 
 	// Item Category
 	itemCategoryRepo := itemcategory.NewRepository(dbConn)
