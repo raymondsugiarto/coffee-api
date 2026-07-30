@@ -18,10 +18,11 @@ type Service interface {
 
 type service struct {
 	repo Repository
+	companyService company.Service
 }
 
-func NewService(repo Repository) Service {
-	return &service{repo: repo}
+func NewService(repo Repository, companyService company.Service) Service {
+	return &service{repo: repo, companyService: companyService}
 }
 
 func (s *service) Create(ctx context.Context, dto *entity.ItemDto) (*entity.ItemDto, error) {
