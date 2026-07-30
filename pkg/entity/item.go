@@ -58,26 +58,13 @@ func NewItemDtoFromModel(m *model.Item) *ItemDto {
 	if m == nil {
 		return nil
 	}
-	d := &ItemDto{
+	return &ItemDto{
 		ID:             m.ID,
 		OrganizationID: m.OrganizationID,
-		CategoryID:     m.CategoryID,
-		ParentID:       m.ParentID,
 		Code:           m.Code,
-		SKU:            m.SKU,
 		Name:           m.Name,
 		Price:          m.Price,
-		CostPrice:      m.CostPrice,
-		Commision:      m.Commision,
-		IsActive:       m.IsActive,
 	}
-	if m.Category != nil {
-		d.Category = NewItemCategoryDtoFromModel(m.Category)
-	}
-	if m.Parent != nil {
-		d.Parent = NewItemDtoFromModel(m.Parent)
-	}
-	return d
 }
 
 func (d *ItemDto) ToModel() *model.Item {
