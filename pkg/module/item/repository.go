@@ -74,6 +74,9 @@ func (r *repository) FindAll(ctx context.Context, req *entity.ItemFindAllRequest
 		if req.Session == model.SessionTypeMorning {
 			q.Where("item.parent_id is null")
 		}
+		if len(req.ParentIDs) > 0 {
+			q.Where("item.parent_id IN ?", req.ParentIDs)
+		}
 		// Org-scoped catalog. Items with a NULL organization_id are
 		// treated as global (visible to every org) so seed data is
 		// still surfaced. Same convention as item_category below.

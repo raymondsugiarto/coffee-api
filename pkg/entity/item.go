@@ -64,6 +64,12 @@ func NewItemDtoFromModel(m *model.Item) *ItemDto {
 		Code:           m.Code,
 		Name:           m.Name,
 		Price:          m.Price,
+		CostPrice:      m.CostPrice,
+		Commision:      m.Commision,
+		IsActive:       m.IsActive,
+		CategoryID:     m.CategoryID,
+		Category:       NewItemCategoryDtoFromModel(m.Category),
+		ParentID:       m.ParentID,
 	}
 }
 
