@@ -2,6 +2,7 @@ package item
 
 import (
 	"context"
+	"strings"
 
 	"github.com/raymondsugiarto/coffee-api/pkg/entity"
 	"github.com/raymondsugiarto/coffee-api/pkg/model"
@@ -75,7 +76,8 @@ func (r *repository) FindAll(ctx context.Context, req *entity.ItemFindAllRequest
 			q.Where("item.parent_id is null")
 		}
 		if len(req.ParentIDs) > 0 {
-			q.Where("item.parent_id IN ?", req.ParentIDs)
+			parentIDs := strings.Split(req.ParentIDs, ",")
+			q.Where("item.parent_id IN ?", parentIDs)
 		}
 		// Org-scoped catalog. Items with a NULL organization_id are
 		// treated as global (visible to every org) so seed data is

@@ -102,8 +102,8 @@ type ItemFindAllRequest struct {
 	CategoryID     string
 	IsActive       *bool
 	Query          string
-	ParentID       string   // <-- "parent_id" filter (exact). Empty = top-level.
-	ParentIDs      []string // <-- "parent_id IN (...)" filter. Empty = no restriction.
+	ParentID       string // <-- "parent_id" filter (exact). Empty = top-level.
+	ParentIDs      string // <-- "parent_id IN (...)" filter. Empty = no restriction.
 }
 
 func (r *ItemFindAllRequest) GenerateFilter() {
