@@ -209,6 +209,22 @@ func UpdateStockSession(service stocksession.Service) fiber.Handler {
 	}
 }
 
+// ============ Delete (OPEN only) ============
+
+func DeleteStockSession(service stocksession.Service) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		actorID := ""
+		if userCred := shared.GetUserCredential(c.Context()); userCred != nil {
+			actorID = userCred.AdminID
+		}
+		if err := service.Delete(c.Context(), id, actorID); err != nil {
+			return err
+		}
+		return c.SendStatus(fiber.StatusNoContent)
+	}
+}
+
 // ============ Close ============
 
 func CloseStockSession(service stocksession.Service) fiber.Handler {

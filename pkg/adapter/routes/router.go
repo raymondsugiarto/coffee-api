@@ -247,6 +247,7 @@ func StockSessionRouter(app fiber.Router, ssService stocksession.Service, itemSe
 	app.Get("/stock-session/today", handlers.GetTodayStockSession(ssService))
 	app.Get("/stock-session/:id", handlers.GetStockSession(ssService))
 	app.Put("/stock-session/:id", handlers.UpdateStockSession(ssService))
+	app.Delete("/stock-session/:id", handlers.DeleteStockSession(ssService))
 	app.Post("/stock-session/:id/close", handlers.CloseStockSession(ssService))
 
 	// Item picker (reuses existing `item` table)

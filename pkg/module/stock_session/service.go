@@ -22,6 +22,7 @@ type Service interface {
 	Get(ctx context.Context, id string) (*entity.StockSessionDto, error)
 	GetByEmployeeDate(ctx context.Context, employeeID, date string) (*entity.StockSessionDto, error)
 	Update(ctx context.Context, dto *entity.StockSessionDto, actorID string) (*entity.StockSessionDto, error)
+	Delete(ctx context.Context, id string, actorID string) error
 	Close(ctx context.Context, id string, dto *entity.StockSessionDto, actorID string) (*entity.StockSessionDto, error)
 	FindAll(ctx context.Context, req *entity.StockSessionFindAllRequest) (*pagination.ResultPagination, error)
 	GetDashboard(ctx context.Context) (*entity.DashboardSummaryDto, error)
@@ -106,6 +107,25 @@ func (s *service) Get(ctx context.Context, id string) (*entity.StockSessionDto, 
 
 func (s *service) GetByEmployeeDate(ctx context.Context, employeeID, date string) (*entity.StockSessionDto, error) {
 	return s.repo.GetByEmployeeDate(ctx, employeeID, date)
+}
+
+// Delete removes an OPEN morning session. Closed sessions are
+// immutable financial records and must never be deleted through
+// this path — caller's responsibility to enforce that, but we
+// double-check here as a defensive guard.
+func (s *service) Delete(ctx context.Context, id string, actorID string) error {
+	existing, err := s.repo.Get(ctx, id)
+	if err != nil {
+		return err
+	}
+	if existing.Status == entity.StockSessionStatusClosed {
+		return status.New(status.BadRequest, errors.New("cannot delete closed session"))
+	}
+	log.WithContext(ctx).Infof(
+		"[stock-session/delete] removing OPEN session id=%s actor=%s",
+		id, actorID,
+	)
+	return s.repo.Delete(ctx, id)
 }
 
 func (s *service) Update(ctx context.Context, dto *entity.StockSessionDto, actorID string) (*entity.StockSessionDto, error) {

@@ -15,6 +15,7 @@ type Repository interface {
 	Get(ctx context.Context, id string) (*entity.StockSessionDto, error)
 	GetByEmployeeDate(ctx context.Context, employeeID, date string) (*entity.StockSessionDto, error)
 	Update(ctx context.Context, dto *entity.StockSessionDto) (*entity.StockSessionDto, error)
+	Delete(ctx context.Context, id string) error
 	FindAll(ctx context.Context, req *entity.StockSessionFindAllRequest) (*pagination.ResultPagination, error)
 }
 
@@ -31,46 +32,7 @@ func (r *repository) Create(ctx context.Context, dto *entity.StockSessionDto) (*
 	err := r.db.Transaction(func(tx *gorm.DB) error {
 		m := dto.ToModel()
 
-		// Two-phase write so we never rely on GORM association
-		// auto-insert. Insert the parent first (without items), then
-		// the child stock_session_item rows explicitly. This:
-		//   1. Makes the wire-level intent clear in Postgres logs.
-		//   2. Avoids accidental item creation when the request
-		//      carries a partial payload (e.g. an empty `items`
-		//      slice).
-		//   3. Lets us reject orphan item rows cleanly without GORM
-		//      silent cascade.
-		parent := &model.StockSession{
-			OrganizationID: m.OrganizationID,
-			Date:           m.Date,
-			EmployeeID:     m.EmployeeID,
-			Status:         m.Status,
-			OpenedAt:       m.OpenedAt,
-			ClosedAt:       m.ClosedAt,
-			TotalSales:     m.TotalSales,
-			TotalCash:      m.TotalCash,
-			TotalQris:      m.TotalQris,
-			TotalOther:     m.TotalOther,
-			TotalPayment:   m.TotalPayment,
-			Difference:     m.Difference,
-			TotalItems:     m.TotalItems,
-			// Salary columns: open-time values are 0 today because
-			// the close path is what triggers RecomputeSalary, but
-			// we deliberately round-trip them so a future change to
-			// Open-time resolution (e.g. seed the row with the
-			// employee's company default) lands in the DB without a
-			// schema migration.
-			TotalCommission: m.TotalCommission,
-			MealAllowance:   m.MealAllowance,
-			Attendance:      m.Attendance,
-			BonusTarget:     m.BonusTarget,
-			TotalSalary:     m.TotalSalary,
-			// cash_debt is 0 at open time; close path writes it.
-			CashDebt:  m.CashDebt,
-			Notes:     m.Notes,
-			CreatedBy: m.CreatedBy,
-		}
-		if err := tx.Omit("Items", "Payments", "Adjustments", "Logs").Create(parent).Error; err != nil {
+		if err := tx.Omit("Items", "Payments", "Adjustments", "Logs").Create(m).Error; err != nil {
 			return err
 		}
 
@@ -83,7 +45,7 @@ func (r *repository) Create(ctx context.Context, dto *entity.StockSessionDto) (*
 		// snapshot fields.
 		for _, it := range dto.Items {
 			item := it.ToModel()
-			item.SessionID = parent.ID
+			item.SessionID = m.ID
 			if err := tx.Omit("Item").Create(item).Error; err != nil {
 				return err
 			}
@@ -96,7 +58,7 @@ func (r *repository) Create(ctx context.Context, dto *entity.StockSessionDto) (*
 			Preload("Employee").
 			Preload("Items").
 			Preload("Items.Item").
-			Where("id = ?", parent.ID).First(&reloaded).Error; err != nil {
+			Where("id = ?", m.ID).First(&reloaded).Error; err != nil {
 			return err
 		}
 		result = entity.NewStockSessionDtoFromModel(&reloaded)
@@ -215,6 +177,33 @@ func (r *repository) updateInTx(dto *entity.StockSessionDto) (*entity.StockSessi
 		return nil
 	})
 	return result, err
+}
+
+// Delete removes a stock session row and all its child rows
+// (stock_session_item / payment_detail / cash_adjustment) inside a
+// single transaction so a partial failure cannot leave orphan
+// children behind. Callers must have already verified the session is
+// still OPEN — this repository method is a pure SQL primitive.
+func (r *repository) Delete(ctx context.Context, id string) error {
+	return r.db.Transaction(func(tx *gorm.DB) error {
+		// Child rows first so the parent delete can never race
+		// with the cascading cleanup.
+		if err := tx.Where("session_id = ?", id).Delete(&model.StockSessionItem{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("session_id = ?", id).Delete(&model.PaymentDetail{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Where("session_id = ?", id).Delete(&model.CashAdjustment{}).Error; err != nil {
+			return err
+		}
+		// Parent last. Returns ErrRecordNotFound when no row
+		// matched — the service layer maps that to a 404.
+		if err := tx.Where("id = ?", id).Delete(&model.StockSession{}).Error; err != nil {
+			return err
+		}
+		return nil
+	})
 }
 
 func (r *repository) FindAll(ctx context.Context, req *entity.StockSessionFindAllRequest) (*pagination.ResultPagination, error) {
